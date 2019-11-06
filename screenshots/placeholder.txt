@@ -1,2 +1,0 @@
-This file is only here so the screenshots directory is not empty. Git ignores empty directories.
-Add the screenshots requested in this directory. Please ignore this file.

@@ -63,6 +63,7 @@ public class TicketGUI extends JFrame {
 
         this.controller = controller;
         
+        setTitle("Support Ticket Manager");
         setContentPane(mainPanel);
         pack();
         setVisible(true);
