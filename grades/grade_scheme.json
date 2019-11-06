@@ -1,0 +1,10 @@
+{ "week" : 11 ,
+  "questions" : [
+    {
+      "question" : 1,
+      "java_file": "TicketProgram",
+      "test_files": ["week_11.TestTicketStore", "week_11.TestTicketUI"],
+      "points": 20
+    }
+  ]
+}
