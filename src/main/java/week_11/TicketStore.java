@@ -71,18 +71,13 @@ public class TicketStore {
     }
     
     
-    public boolean updateTicket(Ticket ticket) {
+    public void updateTicket(Ticket ticket) {
         
         // TODO Use the Ticket's ID to modify the row in the database with this ID
         //  modify row in the database to set the values contained in the Ticket object
     
-        // Return true if the ticket is found
-        // Return false if the ticket is not found
+        // Catch any SQLExceptions. Print an error message if an excption if thrown.
         
-        // Catch any SQLExceptions. Print an error message and return false.
-        
-        return false; // TODO replace with your code.
-  
     }
     
     

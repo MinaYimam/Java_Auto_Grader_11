@@ -236,27 +236,11 @@ public class TestTicketStore {
         testPr3.setResolution("Word has been updated");
         testPr3.setStatus(Ticket.TicketStatus.RESOLVED);
         
-        boolean updated = store.updateTicket(testPr3);
+        store.updateTicket(testPr3);
         
         Ticket savedTicket = store.getTicketById(testPr3.getTicketID());
         
         assertTrue(sameOpenTicket(savedTicket, testPr3, 500));
-        
-        assertTrue(updated);
-        
-    }
-    
-    @Test(timeout=timeout)
-    public void testResolveTicketThatDoesNotExist() throws Exception {
-        TicketStore store = new TicketStore(TestConfig.TEST_DB_URI);
-        
-        Ticket testPr1 = new Ticket("The server is on fire", 1, "A. Reporter", new Date());
-        store.add(testPr1);
-        
-        Ticket notSaved = new Ticket("Not saved", 1, "Not saved", new Date());
-        
-        boolean updated = store.updateTicket(notSaved);
-        assertFalse(updated);
         
     }
     

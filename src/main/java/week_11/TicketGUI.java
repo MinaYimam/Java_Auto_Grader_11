@@ -33,7 +33,7 @@ public class TicketGUI extends JFrame {
     protected JPanel controlsPanel;
     protected JButton quitButton;
     
-    // Deleting
+    // Resolving
     protected JButton resolveSelectedButton;
     
     protected DefaultListModel<Ticket> ticketListModel;
@@ -48,7 +48,7 @@ public class TicketGUI extends JFrame {
     
     
     // A reference to the TicketProgram object
-    // The GUI will call the methods in this class to add, search for, and delete tickets.
+    // The GUI will call the methods in this class to add, search for, and resolve tickets.
     // See example in quitProgram method.
     private TicketController controller;
     
@@ -77,21 +77,6 @@ public class TicketGUI extends JFrame {
         // TODO add action listeners for each button
     }
     
-    private void resolveSelected() {
-        // TODO finish this method
-    }
-    
-    private void searchByDescription() {
-        // TODO finish this method
-    }
-    
-    private void searchByID() {
-      // TODO finish this method
-    }
-    
-    private void addTicket() {
-       // TODO finish this method
-    }
     
     
     // Call this method to quit the program. The tests expect you to use it.
