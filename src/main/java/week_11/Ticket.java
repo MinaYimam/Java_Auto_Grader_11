@@ -122,7 +122,7 @@ public class Ticket {
     
     public String toString(){
     
-        String out = String.format("Id: %d, Description: %s, Priority: %d, Reported by: %s, Reported on: %s. " +
+        String out = String.format("Id: %d, Description: %s, Priority: %d, Reported by: %s, Reported on: %s. ",
                 this.ticketID, this.description, this.priority, this.reporter, this.dateReported);
         
         if (dateResolved != null && dateResolved.getTime() != 0) {
