@@ -21,13 +21,16 @@ For this lab, you will implement a GUI for the program.
 Set up database. In the constructor of TicketStore, create the ticket table, if it does not exist. 
 It should have these columns, types and constraints, in this order:
 
-* rowid, an autogenerating ID  (remember SQLite can create this column and autogenerate the values for you)
 * description, text, Can't be null.
 * priority, a number in the range 1-5. Can't be null. Add constraints to prohibit values outside this range.
 * dateReported, number, the long time value of a Date object, representing the date the ticket was created. Can't ben null.
 * resolution, text. May be null.
 * dateResolved, number, the long time value of a Date object, representing the date the ticket was marked as resolved. May be null.
 * status, text, either "OPEN" or "RESOLVED". These are the only acceptable values.
+
+Do not set a primary key column.
+SQLite will generate a rowid, the first column in the database, and it will be an autogenerating ID. 
+You will use this as the ticket ID.
   
 
 ### Task 2: 
