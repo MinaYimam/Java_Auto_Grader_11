@@ -67,6 +67,8 @@ Add a listener to `showAllTicketsButton` to show all of the current open tickets
 
 Finish the addTicket method in TicketStore.  This method should write a new row to the database for the new ticket.  The new ticket may have data that violates the database constraints and cause a SQLException to be thrown. Let this exception be thrown from the method. Code in TicketController checks for this exception. 
 
+When the new ticket has been added, SQLite generates an ID number - the rowid column - for the new ticket. You need to update your Ticket object using it's `setTicketID` method to store the new ID.  
+
 Implement the add ticket feature in TicketGUI. 
 
 Add a listener to addButton which reads data from `descriptionTextField` and `reporterTextField` and `priorityComboBox`.  Ensure that all the data needed has been entered. If so, create a new Ticket and call `controller.addTicket(newTicket)` to request that the new ticket is added to the Ticket store. 
