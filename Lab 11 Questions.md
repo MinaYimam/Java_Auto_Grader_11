@@ -23,6 +23,7 @@ It should have these columns, types and constraints, in this order:
 
 * description, text, Can't be null.
 * priority, a number in the range 1-5. Can't be null. Add constraints to prohibit values outside this range.
+* reporter, text, can't be null.
 * dateReported, number, the long time value of a Date object, representing the date the ticket was created. Can't ben null.
 * resolution, text. May be null.
 * dateResolved, number, the long time value of a Date object, representing the date the ticket was marked as resolved. May be null.
