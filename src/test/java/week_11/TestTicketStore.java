@@ -82,7 +82,7 @@ public class TestTicketStore {
     
     
     @Test(timeout=timeout, expected = SQLException.class)
-    public void testNoReporter() throws Exception {
+    public void testAddNoReporter() throws Exception {
         TicketStore store = new TicketStore(TestConfig.TEST_DB_URI);
         Ticket t1 = new Ticket("Invalid Reporter", 3, null, new Date());
         store.add(t1);
@@ -90,7 +90,7 @@ public class TestTicketStore {
     
     
     @Test(timeout=timeout, expected = SQLException.class)
-    public void testNoDescription() throws Exception {
+    public void testAddNoDescription() throws Exception {
         TicketStore store = new TicketStore(TestConfig.TEST_DB_URI);
         Ticket t1 = new Ticket(null, 3, "Me", new Date());
         store.add(t1);
@@ -98,28 +98,28 @@ public class TestTicketStore {
     
     
     @Test(timeout=timeout, expected = SQLException.class)
-    public void testPriorityRangeZero() throws Exception {
+    public void testAddPriorityRangeZero() throws Exception {
         TicketStore store = new TicketStore(TestConfig.TEST_DB_URI);
         Ticket t1 = new Ticket("Invalid priority", 0, "me", new Date());
         store.add(t1);
     }
     
     @Test(timeout=timeout, expected = SQLException.class)
-    public void testPriorityRangeMinus1() throws Exception {
+    public void testAddPriorityRangeMinus1() throws Exception {
         TicketStore store = new TicketStore(TestConfig.TEST_DB_URI);
         Ticket t1 = new Ticket("Invalid priority", -1, "me", new Date());
         store.add(t1);
     }
     
     @Test(timeout=timeout, expected = SQLException.class)
-    public void testPriorityRangeSix() throws Exception {
+    public void testAddPriorityRangeSix() throws Exception {
         TicketStore store = new TicketStore(TestConfig.TEST_DB_URI);
         Ticket t1 = new Ticket("Invalid priority", 6, "me", new Date());
         store.add(t1);
     }
     
     @Test(timeout=timeout, expected = SQLException.class)
-    public void testPriorityRangeSixty() throws Exception {
+    public void testAddPriorityRangeSixty() throws Exception {
         TicketStore store = new TicketStore(TestConfig.TEST_DB_URI);
         Ticket t1 = new Ticket("Invalid priority", 60, "me", new Date());
         store.add(t1);
