@@ -25,6 +25,7 @@ public class TestTicketUI {
     }
     
     
+    
     private void insertTestTickets() throws Exception {
         test_added_first = new Ticket("Server keeps rebooting", 1, "user 1", new Date());
         test_added_second = new Ticket("Mouse stolen", 5, "user 2", new Date());
@@ -47,6 +48,9 @@ public class TestTicketUI {
 
     /* *************** Test TicketUI Methods **********************/
 
+    // 0 Test Ticket To String
+    
+  
 
     // TASK 1 Configure ComboBox
 
@@ -454,7 +458,7 @@ public class TestTicketUI {
 
 
         // Search for empty string, should return no tickets
-        gui.idSearchTextBox.setText("");
+        gui.descriptionSearchTextBox.setText("");
         gui.searchIdButton.doClick();
 
         // List should be empty, no ticket found message shown
