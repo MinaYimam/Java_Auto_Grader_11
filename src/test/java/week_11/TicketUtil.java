@@ -18,7 +18,7 @@ public class TicketUtil {
     public static void clearStore() {
         try (Connection con = DriverManager.getConnection(Configuration.TEST_DB_URI);
              Statement statement = con.createStatement()) {
-            statement.execute("DELETE FROM tickets");
+            statement.execute("DROP TABLE IF EXISTS tickets");
         } catch (SQLException e) {
             System.out.println("Error clearing data from test database. does the database exist?");
         }
