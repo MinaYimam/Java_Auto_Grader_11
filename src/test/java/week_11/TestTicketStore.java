@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static week_11.TestConfig.timeout;
+import static week_11.Configuration.timeout;
 
 import static org.junit.Assert.*;
 import static week_11.TicketUtil.sameOpenTicket;
@@ -31,7 +31,7 @@ public class TestTicketStore {
         t.setDateResolved(new Date(2000000));
         t.setResolution("Fixed");
         
-        TicketStore store = new TicketStore(TestConfig.TEST_DB_URI);
+        TicketStore store = new TicketStore(Configuration.TEST_DB_URI);
         store.add(t);
         
         Ticket fromStore = store.getTicketById(t.getTicketID());
@@ -42,31 +42,37 @@ public class TestTicketStore {
     @Test(timeout = timeout, expected = SQLException.class)
     public void testStatus() throws Exception {
         
-        try (Statement statement = DriverManager.getConnection(TestConfig.TEST_DB_URI).createStatement())  {
-            statement.executeUpdate("INSERT INTO tickets values ('Problem', 4, 'me', 500000, 'fixed', 600000, 'PIZZA' )");
-        } catch (SQLException e ) {
-            System.out.println("status," + e);
-            throw e;
+        try (Statement statement = DriverManager.getConnection(Configuration.TEST_DB_URI).createStatement())  {
+            statement.executeUpdate("INSERT INTO tickets (description, priority, reporter, dateReported, resolution, dateResolved, status)" +
+                    " values ('Problem', 4, 'me', 500000, 'fixed', 600000, 'PIZZA' )");
+        } catch (SQLException e) {
+            // if DB is configured correctly, a SQLException should be thrown.
+            System.out.println(e.getErrorCode());
+            if (e.getErrorCode() == 19) {  // constraint violation
+                throw e;  // the test will be happy if the exception is thrown
+            }
+            // not cool - don't throw and test fails
         }
     }
     
     @Test(timeout = timeout)
     public void testInsertToTable() throws Exception {
-        
-        int newid = 0;
-        try (Statement statement = DriverManager.getConnection(TestConfig.TEST_DB_URI).createStatement())  {
-            statement.executeUpdate("INSERT INTO tickets values ('Problem', 4, 'Me', 500000, 'Fixed', 600000, 'RESOLVED' )");
+
+        int newid;
+        try (Statement statement = DriverManager.getConnection(Configuration.TEST_DB_URI).createStatement())  {
+            statement.executeUpdate("INSERT INTO tickets (description, priority, reporter, dateReported, resolution, dateResolved, status)" +
+                    " values ('Problem', 4, 'Me', 500000, 'Fixed', 600000, 'RESOLVED' )");
             ResultSet rs = statement.getGeneratedKeys();
             if (rs.next()) {
                 newid = rs.getInt(1);
             } else {
-                throw new SQLException("no row id generated in table");
+                throw new SQLException("no id generated in table");
             }
         } catch (SQLException e ) {
             throw e;
         }
         
-        TicketStore store = new TicketStore(TestConfig.TEST_DB_URI);
+        TicketStore store = new TicketStore(Configuration.TEST_DB_URI);
         Ticket ticket = store.getTicketById(newid);
         
         assertEquals("Problem", ticket.getDescription());
@@ -83,7 +89,7 @@ public class TestTicketStore {
     
     @Test(timeout=timeout, expected = SQLException.class)
     public void testAddNoReporter() throws Exception {
-        TicketStore store = new TicketStore(TestConfig.TEST_DB_URI);
+        TicketStore store = new TicketStore(Configuration.TEST_DB_URI);
         Ticket t1 = new Ticket("Invalid Reporter", 3, null, new Date());
         store.add(t1);
     }
@@ -91,7 +97,7 @@ public class TestTicketStore {
     
     @Test(timeout=timeout, expected = SQLException.class)
     public void testAddNoDescription() throws Exception {
-        TicketStore store = new TicketStore(TestConfig.TEST_DB_URI);
+        TicketStore store = new TicketStore(Configuration.TEST_DB_URI);
         Ticket t1 = new Ticket(null, 3, "Me", new Date());
         store.add(t1);
     }
@@ -99,28 +105,28 @@ public class TestTicketStore {
     
     @Test(timeout=timeout, expected = SQLException.class)
     public void testAddPriorityRangeZero() throws Exception {
-        TicketStore store = new TicketStore(TestConfig.TEST_DB_URI);
+        TicketStore store = new TicketStore(Configuration.TEST_DB_URI);
         Ticket t1 = new Ticket("Invalid priority", 0, "me", new Date());
         store.add(t1);
     }
     
     @Test(timeout=timeout, expected = SQLException.class)
     public void testAddPriorityRangeMinus1() throws Exception {
-        TicketStore store = new TicketStore(TestConfig.TEST_DB_URI);
+        TicketStore store = new TicketStore(Configuration.TEST_DB_URI);
         Ticket t1 = new Ticket("Invalid priority", -1, "me", new Date());
         store.add(t1);
     }
     
     @Test(timeout=timeout, expected = SQLException.class)
     public void testAddPriorityRangeSix() throws Exception {
-        TicketStore store = new TicketStore(TestConfig.TEST_DB_URI);
+        TicketStore store = new TicketStore(Configuration.TEST_DB_URI);
         Ticket t1 = new Ticket("Invalid priority", 6, "me", new Date());
         store.add(t1);
     }
     
     @Test(timeout=timeout, expected = SQLException.class)
     public void testAddPriorityRangeSixty() throws Exception {
-        TicketStore store = new TicketStore(TestConfig.TEST_DB_URI);
+        TicketStore store = new TicketStore(Configuration.TEST_DB_URI);
         Ticket t1 = new Ticket("Invalid priority", 60, "me", new Date());
         store.add(t1);
     }
@@ -128,7 +134,7 @@ public class TestTicketStore {
     
     @Test(timeout=timeout)
     public void testSearchDescriptionEmptyStore() throws Exception {
-        TicketStore store = new TicketStore(TestConfig.TEST_DB_URI);
+        TicketStore store = new TicketStore(Configuration.TEST_DB_URI);
         
         // Any searches on an empty list should return an empty list.
         assertEquals(0, store.searchByDescription("office").size());
@@ -141,7 +147,7 @@ public class TestTicketStore {
     @Test(timeout=timeout)
     public void testSearchDescriptionExpectedFound() throws Exception {
         
-        TicketStore store = new TicketStore(TestConfig.TEST_DB_URI);
+        TicketStore store = new TicketStore(Configuration.TEST_DB_URI);
         
         Ticket test1 = new Ticket("The server is on fire", 1, "1", new Date());
         Ticket test2 = new Ticket("Server keeps rebooting", 2, "2", new Date());
@@ -189,7 +195,7 @@ public class TestTicketStore {
     @Test(timeout=timeout)
     public void testSearchDescriptionNotFound() throws Exception {
         
-        TicketStore store = new TicketStore(TestConfig.TEST_DB_URI);
+        TicketStore store = new TicketStore(Configuration.TEST_DB_URI);
         
         Ticket test1 = new Ticket("The server is on fire", 1, "1", new Date());
         Ticket test2 = new Ticket("Server keeps rebooting", 2, "2", new Date());
@@ -224,7 +230,7 @@ public class TestTicketStore {
     
     @Test(timeout=timeout)
     public void testResolveTicketThatExists() throws Exception {
-        TicketStore store = new TicketStore(TestConfig.TEST_DB_URI);
+        TicketStore store = new TicketStore(Configuration.TEST_DB_URI);
         
         Ticket testPr1 = new Ticket("The server is on fire", 1, "A. Reporter", new Date());
         Ticket testPr5 = new Ticket("Mouse mat stolen", 5, "B. Reporter", new Date());
@@ -248,7 +254,7 @@ public class TestTicketStore {
     @Test
     public void testTicketStoreTicketsSortedPriorityOrder() throws Exception  {
         
-        TicketStore store = new TicketStore(TestConfig.TEST_DB_URI);
+        TicketStore store = new TicketStore(Configuration.TEST_DB_URI);
         
         // Test tickets with all different priorities
         Ticket testPr1 = new Ticket("The server is on fire", 1, "A. Reporter", new Date());
@@ -270,7 +276,7 @@ public class TestTicketStore {
     @Test
     public void testTicketStoreGetTicketByID() throws Exception {
         
-        TicketStore store = new TicketStore(TestConfig.TEST_DB_URI);
+        TicketStore store = new TicketStore(Configuration.TEST_DB_URI);
         
         Ticket testPr1 = new Ticket("The server is on fire", 1, "A. Reporter", new Date());
         Ticket testPr5 = new Ticket("Mouse mat stolen", 5, "B. Reporter", new Date());
@@ -289,7 +295,7 @@ public class TestTicketStore {
     @Test
     public void testTicketStoreGetTicketByIDNotInStore() throws Exception {
         
-        TicketStore store = new TicketStore(TestConfig.TEST_DB_URI);
+        TicketStore store = new TicketStore(Configuration.TEST_DB_URI);
         
         assertNull(store.getTicketById(0));  // not valid
         assertNull(store.getTicketById(-2));  // not valid

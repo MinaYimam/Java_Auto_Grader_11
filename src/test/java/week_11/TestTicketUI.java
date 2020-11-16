@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.Assert.*;
-import static week_11.TestConfig.timeout;
+import static week_11.Configuration.timeout;
 import static week_11.TicketUtil.sameOpenTicket;
 
 
@@ -39,7 +39,7 @@ public class TestTicketUI {
         testTickets.add(test_added_third);
         testTickets.add(test_added_second);
 
-        TicketStore store = new TicketStore(TestConfig.TEST_DB_URI);
+        TicketStore store = new TicketStore(Configuration.TEST_DB_URI);
         store.add(test_added_first);
         store.add(test_added_second);
         store.add(test_added_third);
@@ -57,7 +57,7 @@ public class TestTicketUI {
     @Test(timeout=timeout)
     public void testPriorityComboBoxConfigured() {
 
-        TicketController controller = new TicketController(new TicketStore(TestConfig.TEST_DB_URI));
+        TicketController controller = new TicketController(new TicketStore(Configuration.TEST_DB_URI));
         TicketGUI gui = new TicketGUI(controller);
 
         JComboBox priorityCombo = gui.priorityComboBox;
@@ -87,7 +87,7 @@ public class TestTicketUI {
         // Check JList set to single selection
         // Model uses Ticket objects
 
-        TicketController controller = new TicketController(new TicketStore(TestConfig.TEST_DB_URI));
+        TicketController controller = new TicketController(new TicketStore(Configuration.TEST_DB_URI));
         TicketGUI gui = new TicketGUI(controller);
 
         JList ticketList = gui.ticketList;
@@ -115,7 +115,7 @@ public class TestTicketUI {
 
         insertTestTickets();
         
-        TicketController controller = new TicketController(new TicketStore(TestConfig.TEST_DB_URI));
+        TicketController controller = new TicketController(new TicketStore(Configuration.TEST_DB_URI));
         TicketGUI gui = new TicketGUI(controller);
         
         JList ticketList = gui.ticketList;
@@ -135,7 +135,7 @@ public class TestTicketUI {
 
         String msg = "Ticket added to the list should have the same data as that entered into GUI.";
 
-        TicketStore store = new TicketStore(TestConfig.TEST_DB_URI);
+        TicketStore store = new TicketStore(Configuration.TEST_DB_URI);
         TicketController controller = new TicketController(store);
         TicketGUI gui = new TicketGUI(controller);
 
@@ -199,7 +199,7 @@ public class TestTicketUI {
 
         insertTestTickets();
 
-        TicketStore store = new TicketStore(TestConfig.TEST_DB_URI);
+        TicketStore store = new TicketStore(Configuration.TEST_DB_URI);
         TicketController controller = new TicketController(store);
         TicketGUI gui = new TicketGUI(controller);
         
@@ -238,7 +238,7 @@ public class TestTicketUI {
     @Test(timeout=timeout)
     public void testAddTicketInvalidData() {
 
-        TicketStore store = new TicketStore(TestConfig.TEST_DB_URI);
+        TicketStore store = new TicketStore(Configuration.TEST_DB_URI);
         TicketController controller = new TicketController(store);
 
         TicketGUIMockDialog gui = new TicketGUIMockDialog(controller);  // Replace GUI with mock dialog version
@@ -257,7 +257,7 @@ public class TestTicketUI {
     // Checks various things about not adding invalid tickets.
     private void assertFailAddInvalidTicket(TicketGUIMockDialog gui, String description, String reporter, Integer comboboxSelection) {
 
-        TicketStore store = new TicketStore(TestConfig.TEST_DB_URI);
+        TicketStore store = new TicketStore(Configuration.TEST_DB_URI);
         
         gui.descriptionTextField.setText(description);
         gui.reporterTextField.setText(reporter);
@@ -285,7 +285,7 @@ public class TestTicketUI {
     
         insertTestTickets();
     
-        TicketStore store = new TicketStore(TestConfig.TEST_DB_URI);
+        TicketStore store = new TicketStore(Configuration.TEST_DB_URI);
         TicketController controller = new TicketController(store);
         TicketGUI gui = new TicketGUI(controller);
 
@@ -356,7 +356,7 @@ public class TestTicketUI {
         
         insertTestTickets();
         
-        TicketStore store = new TicketStore(TestConfig.TEST_DB_URI);
+        TicketStore store = new TicketStore(Configuration.TEST_DB_URI);
         TicketController controller = new TicketController(store);
         TicketGUI gui = new TicketGUI(controller);
         
@@ -397,7 +397,7 @@ public class TestTicketUI {
 
         insertTestTickets();
 
-        TicketStore store = new TicketStore(TestConfig.TEST_DB_URI);
+        TicketStore store = new TicketStore(Configuration.TEST_DB_URI);
         TicketController controller = new TicketController(store);
         TicketGUI gui = new TicketGUI(controller);
         
@@ -487,7 +487,7 @@ public class TestTicketUI {
 
         insertTestTickets();
 
-        TicketStore store = new TicketStore(TestConfig.TEST_DB_URI);
+        TicketStore store = new TicketStore(Configuration.TEST_DB_URI);
         TicketController controller = new TicketController(store);
 
         TicketGUIMockDialog gui = new TicketGUIMockDialog(controller);
@@ -508,7 +508,7 @@ public class TestTicketUI {
 
         insertTestTickets();
 
-        TicketStore store = new TicketStore(TestConfig.TEST_DB_URI);
+        TicketStore store = new TicketStore(Configuration.TEST_DB_URI);
         TicketController controller = new TicketController(store);
         TicketGUIMockDialog gui = new TicketGUIMockDialog(controller);
 
@@ -561,7 +561,7 @@ public class TestTicketUI {
     
         insertTestTickets();
     
-        TicketStore store = new TicketStore(TestConfig.TEST_DB_URI);
+        TicketStore store = new TicketStore(Configuration.TEST_DB_URI);
         TicketController controller = new TicketController(store);
         TicketGUIMockDialog gui = new TicketGUIMockDialog(controller);
 
@@ -648,7 +648,7 @@ public class TestTicketUI {
     
         insertTestTickets();
     
-        TicketStore store = new TicketStore(TestConfig.TEST_DB_URI);
+        TicketStore store = new TicketStore(Configuration.TEST_DB_URI);
         TicketController controller = new TicketController(store);
         TicketGUI gui = new TicketGUI(controller);
         
@@ -658,7 +658,7 @@ public class TestTicketUI {
         gui.quitButton.doClick();   // This should invoke the save and quit method for the test Tickets.
 
         // Now restart program
-        TicketStore store2 = new TicketStore(TestConfig.TEST_DB_URI);
+        TicketStore store2 = new TicketStore(Configuration.TEST_DB_URI);
         TicketController controller2 = new TicketController(store2);
         
         // The tickets should have been read from a file, and be available.

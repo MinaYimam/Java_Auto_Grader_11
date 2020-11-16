@@ -5,7 +5,7 @@ import org.junit.Test;
 import java.util.Date;
 
 import static org.junit.Assert.assertTrue;
-import static week_11.TestConfig.timeout;
+import static week_11.Configuration.timeout;
 
 /**
  * Created by clara on 11/12/19.

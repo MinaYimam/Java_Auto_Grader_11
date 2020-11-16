@@ -16,7 +16,7 @@ import static org.junit.Assert.fail;
 public class TicketUtil {
     
     public static void clearStore() {
-        try (Connection con = DriverManager.getConnection(TestConfig.TEST_DB_URI);
+        try (Connection con = DriverManager.getConnection(Configuration.TEST_DB_URI);
              Statement statement = con.createStatement()) {
             statement.execute("DELETE FROM tickets");
         } catch (SQLException e) {
