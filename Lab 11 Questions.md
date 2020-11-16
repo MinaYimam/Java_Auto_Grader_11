@@ -98,6 +98,8 @@ Do **not** show any message dialogs.
 
 ### Task 8: Search by Description
 
+This feature will search for all tickets with a search term in their description. This feature will find both open and resolved tickets.
+
 Implement a listener for the `searchDescriptionButton`. When this button is clicked, read the text in `descriptionSearchTextBox`. Verify data has been entered.
 
 If there is no search data, `ticketList` should be empty, and set the `ticketListStatusDescription` JLabel to the String `NO_TICKETS_FOUND`

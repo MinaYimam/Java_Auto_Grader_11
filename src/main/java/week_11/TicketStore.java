@@ -86,7 +86,7 @@ public class TicketStore {
     
     
     public List<Ticket> searchByDescription(String description) {
-        // TODO search the database for all OPEN tickets that match the description
+        // TODO search the database for all (OPEN AND RESOLVED) tickets that match the description
         //  If description is null, or a blank string, or empty string, return an empty list
         //  The search should be case-insensitive.
         //  The search should return partial matches.
