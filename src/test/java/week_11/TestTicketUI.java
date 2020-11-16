@@ -427,7 +427,7 @@ public class TestTicketUI {
         // Update search status
 
         assertEquals("After ticket found by ID, update the ticketListStatusDescription JLabel. Use the TicketGUI.OPEN_TICKETS_MATCHING_SEARCH_DESCRIPTION String.",
-                TicketGUI.OPEN_TICKETS_MATCHING_SEARCH_DESCRIPTION, gui.ticketListStatusDescription.getText());
+                TicketGUI.TICKETS_MATCHING_SEARCH_DESCRIPTION, gui.ticketListStatusDescription.getText());
 
         // Search for ticket "Server keeps rebooting", should now only show ticket 2 in the list
 
@@ -443,7 +443,7 @@ public class TestTicketUI {
                 " shown in the JList", sameOpenTicket(test_added_first, expected2));
 
         assertEquals("After ticket found by ID, update the ticketListStatusDescription JLabel. Use the TicketGUI.OPEN_TICKETS_MATCHING_SEARCH_DESCRIPTION String.",
-                TicketGUI.OPEN_TICKETS_MATCHING_SEARCH_DESCRIPTION, gui.ticketListStatusDescription.getText());
+                TicketGUI.TICKETS_MATCHING_SEARCH_DESCRIPTION, gui.ticketListStatusDescription.getText());
 
         // Search for ticket text = "Powerpoint", does not exist in list
 

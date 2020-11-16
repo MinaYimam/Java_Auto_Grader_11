@@ -38,10 +38,10 @@ public class TicketGUI extends JFrame {
     
     protected DefaultListModel<Ticket> ticketListModel;
     
-    // Messages for showing in ticketListStatusDescription
+    // Messages that will be shown in ticketListStatusDescription
     // TODO Use these instead of your own Strings. The tests expect you to use these constants
     static final String ALL_TICKETS = "Showing all open tickets";
-    static final String OPEN_TICKETS_MATCHING_SEARCH_DESCRIPTION = "Open tickets matching search description";
+    static final String TICKETS_MATCHING_SEARCH_DESCRIPTION = "Open tickets matching search description";
     static final String TICKET_MATCHING_ID = "Ticket matching ID";
     static final String NO_TICKETS_FOUND = "No matching tickets";
     static final String INVALID_TICKET_ID = "Invalid ticket ID";

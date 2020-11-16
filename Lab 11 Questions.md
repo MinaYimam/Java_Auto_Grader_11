@@ -102,9 +102,11 @@ Implement a listener for the `searchDescriptionButton`. When this button is clic
 
 If there is no search data, `ticketList` should be empty, and set the `ticketListStatusDescription` JLabel to the String `NO_TICKETS_FOUND`
 
-If there is search data, then use `controller` to search for the matching tickets.
+If there is search data, then use `controller` to search for the matching tickets. Your program will find all open and resolved tickets. 
 
-If tickets containing the description are found (remember the search should not be case sensitive), display all the matching Tickets in `ticketList` and set `ticketListStatusDescription` to `TICKETS_MATCHING_DESCRIPTION`. The search method you wrote in the previous version of this lab should work for this lab too. 
+You will need to create a method in TicketStore that will query the database.
+
+If any tickets (open or resolved) containing the description are found (remember the search should not be case sensitive), display all the matching Tickets in `ticketList` and set `ticketListStatusDescription` to `TICKETS_MATCHING_DESCRIPTION`.  
 
 If no tickets matching this description are found, `ticketList` should not show any Tickets and `ticketListStatusDescription` should be set to `NO_TICKETS_FOUND`
 
