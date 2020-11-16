@@ -130,7 +130,7 @@ Or, the user will type in a resolution String and click the OK button. Do the fo
 * Use the String entered to set the resolution of the ticket. 
 * Set the date it was resolved to the current date/time 
 * Set the status to TicketStatus.RESOLVED
-* Call controller's `resolveTicket` method to remove this Ticket from the ticket store, and add it to the resolved tickets store. 
+* Call controller's `updateTicket` method to modify this Ticket's entry in the database. 
 * Display a message dialog with a confirmation message. 
 * The GUI should update `ticketList` so the resolved Ticket is no longer in the list. Display all the remaining open Tickets. 
 * `ticketListStatusDescription` should show the String `ALL_TICKETS`. 
