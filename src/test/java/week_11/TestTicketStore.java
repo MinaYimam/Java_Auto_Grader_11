@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 import static week_11.Configuration.timeout;
 
 import static org.junit.Assert.*;
-import static week_11.TicketUtil.sameOpenTicket;
+import static week_11.TicketUtil.sameTicket;
 
 public class TestTicketStore {
     
@@ -35,7 +35,7 @@ public class TestTicketStore {
         store.add(t);
         
         Ticket fromStore = store.getTicketById(t.getTicketID());
-        assertTrue(sameOpenTicket(t, fromStore));
+        assertTrue(TicketUtil.sameTicket(t, fromStore));
     }
     
     
@@ -246,7 +246,7 @@ public class TestTicketStore {
         
         Ticket savedTicket = store.getTicketById(testPr3.getTicketID());
         
-        assertTrue(sameOpenTicket(savedTicket, testPr3, 500));
+        assertTrue(TicketUtil.sameTicket(savedTicket, testPr3, 500));
         
     }
     
@@ -266,9 +266,9 @@ public class TestTicketStore {
         
         List<Ticket> allTickets = store.getAllOpenTickets();
         
-        assertTrue(sameOpenTicket(allTickets.get(0), testPr1, true));
-        assertTrue(sameOpenTicket(allTickets.get(1), testPr3, true));
-        assertTrue(sameOpenTicket(allTickets.get(2), testPr5, true));
+        assertTrue(TicketUtil.sameTicket(allTickets.get(0), testPr1, true));
+        assertTrue(TicketUtil.sameTicket(allTickets.get(1), testPr3, true));
+        assertTrue(TicketUtil.sameTicket(allTickets.get(2), testPr5, true));
         
     }
     
@@ -286,9 +286,9 @@ public class TestTicketStore {
         store.add(testPr3);
         store.add(testPr5);
         
-        assertTrue(sameOpenTicket(testPr1, store.getTicketById(testPr1.getTicketID())));
-        assertTrue(sameOpenTicket(testPr3, store.getTicketById(testPr3.getTicketID())));
-        assertTrue(sameOpenTicket(testPr5, store.getTicketById(testPr5.getTicketID())));
+        assertTrue(TicketUtil.sameTicket(testPr1, store.getTicketById(testPr1.getTicketID())));
+        assertTrue(TicketUtil.sameTicket(testPr3, store.getTicketById(testPr3.getTicketID())));
+        assertTrue(TicketUtil.sameTicket(testPr5, store.getTicketById(testPr5.getTicketID())));
     }
     
     

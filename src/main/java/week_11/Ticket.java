@@ -3,7 +3,7 @@ package week_11;
 import java.util.Date;
 
 public class Ticket {
-    
+
     /*
     * An enumeration is a structure that can only take one of
     * given set of constant values. In this case, a TicketStatus can only be
@@ -24,9 +24,9 @@ public class Ticket {
     *  TicketStatus statusFromString = TicketStatus.valueOf("CLOSED");       // OK - the String must be exact
     *  TicketStatus anotherStatusFromString = TicketStatus.valueOf("OPEN");   // OK - the String must be exact
     *  TicketStatus invalidFromString = TicketStatus.valueOf("closed");  // Error - not a valid constant in the enum
+    *
     */
 
-    
     enum TicketStatus {
         OPEN, RESOLVED
     }
@@ -41,7 +41,6 @@ public class Ticket {
     private Date dateResolved;
     private TicketStatus status;
     
-    
     // This constructor will be used to create a new, open ticket.
     public Ticket(String desc, int p, String rep, Date date) {
         this.description = desc;
@@ -50,10 +49,11 @@ public class Ticket {
         this.dateReported = date;
         this.status = TicketStatus.OPEN;
     }
-    
+
     
     // TODO create another constructor to create a Ticket from existing Ticket data read from a database
-    //  it should be able to set the ID, dateResolved value, resolution string, and status.
+    //  it should be able to set the same fields as the previous constructor, plus set the
+    //  ticketID, dateResolved value, resolution string, and status.
     
     
     public int getTicketID() {
@@ -122,14 +122,15 @@ public class Ticket {
     
     public String toString(){
     
-        String out = String.format("Id: %d, Description: %s, Priority: %d, Reported by: %s, Reported on: %s. ",
+        String out = String.format("Id: %d, Description: %s, Priority: %d, Reported by: %s, Reported on: %s.",
                 this.ticketID, this.description, this.priority, this.reporter, this.dateReported);
         
         if (dateResolved != null && dateResolved.getTime() != 0) {
-            out += "Date resolved: " + dateResolved;
+            out += " Date resolved: " + dateResolved;
         }
+
         if (resolution != null)  {
-            out += "Resolution: " + resolution;
+            out += " Resolution: " + resolution;
         }
         
         out += " Status: " + status.name();

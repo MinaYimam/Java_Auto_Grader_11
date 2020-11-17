@@ -1,10 +1,7 @@
 package week_11;
 
 import javax.swing.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.List;
 
 import static org.junit.Assert.assertTrue;
@@ -20,7 +17,7 @@ public class TicketUtil {
              Statement statement = con.createStatement()) {
             statement.execute("DROP TABLE IF EXISTS tickets");
         } catch (SQLException e) {
-            System.out.println("Error clearing data from test database. does the database exist?");
+            System.out.println("Error clearing data from test database. Does the database exist?");
         }
     }
     
@@ -33,7 +30,7 @@ public class TicketUtil {
             try {
                 Ticket actual = (Ticket) ticketList.getModel().getElementAt(t);
                 assertTrue(String.format("Element %d of the GUI ticket list expected to be %s but was %s", t, expected.toString(), actual.toString()),
-                        sameOpenTicket(expected, actual, 4000, false));
+                        sameTicket(expected, actual, 4000, false));
                 
             } catch (ClassCastException cce) {
                 fail("Your JList model should contain only Ticket objects.");
@@ -42,19 +39,19 @@ public class TicketUtil {
     }
     
     
-    public static boolean sameOpenTicket(Ticket t1, Ticket t2)  {
-        return sameOpenTicket(t1, t2, 0, false);
+    public static boolean sameTicket(Ticket t1, Ticket t2)  {
+        return sameTicket(t1, t2, 0, false);
     }
     
-    public static boolean sameOpenTicket(Ticket t1, Ticket t2, boolean ignoreId)  {
-        return sameOpenTicket(t1, t2, 0, ignoreId);
+    public static boolean sameTicket(Ticket t1, Ticket t2, boolean ignoreId)  {
+        return sameTicket(t1, t2, 0, ignoreId);
     }
     
-    public static boolean sameOpenTicket(Ticket t1, Ticket t2, long acceptableMsDifferenceInDate)  {
-        return sameOpenTicket(t1, t2, acceptableMsDifferenceInDate, false);
+    public static boolean sameTicket(Ticket t1, Ticket t2, long acceptableMsDifferenceInDate)  {
+        return sameTicket(t1, t2, acceptableMsDifferenceInDate, false);
     }
     
-    public static boolean sameOpenTicket(Ticket t1, Ticket t2, long acceptableMsDifferenceInDate, boolean ignoreId)  {
+    public static boolean sameTicket(Ticket t1, Ticket t2, long acceptableMsDifferenceInDate, boolean ignoreId)  {
         // If either or both tickets are null, return false (because at least one of the things is not an open ticket)
     
         if (t1 == null || t2 == null)  {
@@ -72,18 +69,22 @@ public class TicketUtil {
             System.out.printf("Compare tickets - descriptions don't match \n%s\n%s\n", t1, t2);
             return false;
         }
+
         if (!(t1.getReporter().equals(t2.getReporter())))  {
             System.out.printf("Compare tickets - reporters don't match \n%s\n%s\n", t1, t2);
             return false;
         }
+
         if (t1.getPriority() != t2.getPriority()) {
             System.out.printf("Compare tickets - priorities don't match \n%s\n%s\n", t1, t2);
             return false;
         }
-        
+
         if (t1.getResolution() != null && t2.getResolution() != null && !t1.getResolution().equals(t2.getResolution())) {
             System.out.printf("Compare tickets - resolutions don't match \n%s\n%s\n", t1, t2);
-            return false; }
+            return false;
+        }
+
         // todo one is null, other is not null
         
         long dateDiff = Math.abs(t1.getDateReported().getTime() - t2.getDateReported().getTime());
@@ -103,6 +104,34 @@ public class TicketUtil {
         
         return true;
         
+    }
+
+
+    public static void printAllTickets(String db) {
+
+        try (Statement s = DriverManager.getConnection(db).createStatement()) {
+            ResultSet rs = s.executeQuery("SELECT * FROM tickets");
+            ResultSetMetaData md = rs.getMetaData();
+            int columnCount = md.getColumnCount();
+
+            System.out.println("Data in ticket table");
+            boolean rows = false;
+            while(rs.next()){
+                rows = true;
+                for (int x = 0 ; x < columnCount ; x++) {
+                    String columnName = md.getColumnName(x+1);
+                    System.out.print(columnName + " " + rs.getObject(x+1) + " -- ");
+                }
+                System.out.println();
+            }
+
+            if (!rows) {
+                System.out.println("No rows in ticket table");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error fetching all data from DB " + e);
+        }
     }
     
 }

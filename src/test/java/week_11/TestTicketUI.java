@@ -4,6 +4,9 @@ import org.junit.After;
 import org.junit.Test;
 
 import javax.swing.*;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,7 +14,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import static week_11.Configuration.timeout;
-import static week_11.TicketUtil.sameOpenTicket;
+import static week_11.TicketUtil.sameTicket;
 
 
 public class TestTicketUI {
@@ -49,11 +52,62 @@ public class TestTicketUI {
 
     /* *************** Test TicketUI Methods **********************/
 
-    // 0 Test Ticket To String
-    
-  
 
-    // TASK 1 Configure ComboBox
+
+    // TASK 3 Create Constructor for Ticket objects
+
+    @Test(timeout = timeout)
+    public void testTicketConstructor() throws Exception{
+
+        Class ticketClass = Class.forName("week_11.Ticket");
+        Constructor[] ticketConstructors = ticketClass.getConstructors();
+
+        assertEquals("Create a second constructor in the Ticket class. Do not delete the existing constructor",
+                2, ticketConstructors.length);
+
+        Constructor c1 = ticketConstructors[0];
+        Constructor c2 = ticketConstructors[1];
+
+        Constructor newTicket, ticketFromDB;
+
+        int p1 = c1.getParameterCount();
+
+        if (p1 == 4) {
+            newTicket = c1;
+            ticketFromDB = c2;
+        } else {
+            newTicket = c2;
+            ticketFromDB = c1;
+        }
+
+        assertEquals("Don't modify the existing constructor in the Ticket Class", 4, newTicket.getParameterCount());
+        assertEquals("The new constructor should have 8 parameters", 8, ticketFromDB.getParameterCount());
+
+        Class[] parameters = ticketFromDB.getParameterTypes();
+
+        // Expected parameters, although they need not be in this order
+        Class[] expectedParameters = {
+                String.class,    // description
+                int.class,      // priority
+                String.class,   // reporter
+                Date.class,   // created date
+                int.class,    // id
+                Date.class,   // resolution date
+                String.class,   // resolution
+                Ticket.TicketStatus.class // status
+        };
+
+        Object[] parameterNames = Arrays.stream(parameters).map(e -> e.toString()).toArray();
+        Object[] expectedParameterNames = Arrays.stream(expectedParameters).map(e->e.toString()).toArray();
+        Arrays.sort(parameterNames);
+        Arrays.sort(expectedParameterNames);
+
+        assertArrayEquals(parameterNames, expectedParameterNames);
+
+    }
+
+
+    // TASK 3 Configure ComboBox
 
     @Test(timeout=timeout)
     public void testPriorityComboBoxConfigured() {
@@ -79,8 +133,7 @@ public class TestTicketUI {
         }
     }
 
-
-    // TASK 2 Configure JList
+    // TASK 4 Configure JList
 
     @Test(timeout=timeout)
     public void testTicketListConfigured() {
@@ -159,7 +212,7 @@ public class TestTicketUI {
 
         Ticket actualTicket = gui.ticketList.getModel().getElementAt(0);
 
-        assertTrue(msg, sameOpenTicket(actualTicket, expected1, 1000, true));
+        assertTrue(msg, sameTicket(actualTicket, expected1, 1000, true));
         assertEquals("Added one ticket, should be 1 in data store", 1, store.getAllOpenTickets().size());
         
         
@@ -185,8 +238,8 @@ public class TestTicketUI {
         System.out.println("Created another ticket. Expected ticket =" + expected2);
         System.out.println("Actual ticket created by the program =" + actualTicket2);
 
-        assertTrue(msg, sameOpenTicket(actualTicket1, expected1, 4000, true));
-        assertTrue(msg, sameOpenTicket(actualTicket2, expected2, 4000, true));
+        assertTrue(msg, sameTicket(actualTicket1, expected1, 4000, true));
+        assertTrue(msg, sameTicket(actualTicket2, expected2, 4000, true));
 
         assertEquals("Added two tickets, should be 2 in data store", 2, store.getAllOpenTickets().size());
         
@@ -227,7 +280,7 @@ public class TestTicketUI {
         Ticket actualTicket = gui.ticketList.getModel().getElementAt(2);    // New ticket should be at position 2
         
         assertTrue("A new ticket with priority 4 to the test list should be added at position 2",
-                sameOpenTicket(actualTicket, expected, 2000, true));
+                sameTicket(actualTicket, expected, 2000, true));
         
         assertEquals("A new ticket should be added to the data store. There should be one more ticket in the database.",
                 originalSize + 1, store.getAllOpenTickets().size());
@@ -304,7 +357,7 @@ public class TestTicketUI {
         Ticket expected = (Ticket) ticketList.getModel().getElementAt(0);
 
         assertTrue("After searching for ticket ID that exists, only that matching ticket should be" +
-                " shown in the JList", sameOpenTicket(test_added_second, expected));
+                " shown in the JList", TicketUtil.sameTicket(test_added_second, expected));
 
         // Update search status
         assertEquals("After ticket found by ID, update the ticketListStatusDescription JLabel. Use the TicketGUI TICKET_MATCHING_ID constant.",
@@ -323,7 +376,7 @@ public class TestTicketUI {
         expected = (Ticket) ticketList.getModel().getElementAt(0);
 
         assertTrue("After searching for ticket ID that exists, only that matching ticket should be" +
-                " shown in the JList", sameOpenTicket(test_added_third, expected));
+                " shown in the JList", TicketUtil.sameTicket(test_added_third, expected));
 
         assertEquals("After ticket found by ID, update the ticketListStatusDescription JLabel. Use the TicketGUI TICKET_MATCHING_ID constant.",
                 TicketGUI.TICKET_MATCHING_ID, gui.ticketListStatusDescription.getText());
@@ -418,9 +471,9 @@ public class TestTicketUI {
             Ticket expected3 = (Ticket) ticketList.getModel().getElementAt(1);
 
             assertTrue("After searching for 'mouse', all matching tickets should be" +
-                    " shown in the JList", sameOpenTicket(test_added_second, expected1));
+                    " shown in the JList", TicketUtil.sameTicket(test_added_second, expected1));
             assertTrue("After searching for 'mouse', all matching tickets should be" +
-                    " shown in the JList", sameOpenTicket(test_added_third, expected3));
+                    " shown in the JList", TicketUtil.sameTicket(test_added_third, expected3));
         } catch(IndexOutOfBoundsException e) {
             fail("Create a data model for your JList. All matching tickets should be shown in JList after the search.");
         }
@@ -441,7 +494,7 @@ public class TestTicketUI {
         Ticket expected2 = (Ticket) ticketList.getModel().getElementAt(0);
 
         assertTrue("After searching for ticket 'Server keeps rebooting' that exists, only that matching ticket should be" +
-                " shown in the JList", sameOpenTicket(test_added_first, expected2));
+                " shown in the JList", TicketUtil.sameTicket(test_added_first, expected2));
 
         assertEquals("After ticket found by ID, update the ticketListStatusDescription JLabel. Use the TicketGUI.OPEN_TICKETS_MATCHING_SEARCH_DESCRIPTION String.",
                 TicketGUI.TICKETS_MATCHING_SEARCH_DESCRIPTION, gui.ticketListStatusDescription.getText());
@@ -627,7 +680,7 @@ public class TestTicketUI {
         // On the database side, the ticket should have been updated
         Ticket resolvedTicket = store.getTicketById(test_added_third.getTicketID());
         
-        assertTrue("The deleted ticket should have the same reporter, date reported and description", sameOpenTicket(resolvedTicket, test_added_third));
+        assertTrue("The deleted ticket should have the same reporter, date reported and description", TicketUtil.sameTicket(resolvedTicket, test_added_third));
         assertEquals("The deleted ticket should save the resolution entered by the user", expectedUserInput, resolvedTicket.getResolution());
         assertEquals("The deleted ticket should save the resolution date, the date/time the ticket was resolved",
                 expectedResolvedDate.getTime(), resolvedTicket.getDateResolved().getTime(), 3000);
@@ -713,7 +766,7 @@ public class TestTicketUI {
             Ticket expected = originalTicketList.get(t);
             Ticket actual = ticketList_relaunch.get(t);
 
-            assertTrue(String.format(msg, expected, actual), sameOpenTicket(expected, actual));
+            assertTrue(String.format(msg, expected, actual), TicketUtil.sameTicket(expected, actual));
         }
     }
 
