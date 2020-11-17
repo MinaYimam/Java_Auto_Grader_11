@@ -79,6 +79,7 @@ public class TicketStore {
         
         // TODO Use the Ticket's ID to modify the row in the database with this ID
         //  modify row in the database to set the values contained in the Ticket object
+        //  this method can be used to resolve a ticket.
     
         // Catch any SQLExceptions. Use System.err.print to print an error message if an exception if thrown.
         
@@ -87,6 +88,7 @@ public class TicketStore {
     
     public List<Ticket> searchByDescription(String description) {
         // TODO search the database for all (OPEN AND RESOLVED) tickets that match the description
+        //  Order the tickets by PRIORITY.
         //  If description is null, or a blank string, or empty string, return an empty list
         //  The search should be case-insensitive.
         //  The search should return partial matches.

@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 import static week_11.Configuration.timeout;
 import static week_11.TicketUtil.sameOpenTicket;
 
@@ -493,11 +494,12 @@ public class TestTicketUI {
         TicketGUIMockDialog gui = new TicketGUIMockDialog(controller);
 
         gui.ticketList.clearSelection();   // Unselect everything
+
         gui.resolveSelectedButton.doClick();
 
         // expect a message dialog to be shown
-        assertTrue("Show a message dialog if the user clicks the resolve selected " +
-                "button without anything selected in the ticketList ", gui.wasMessageCalled);
+        assertTrue("Show a message dialog if the user selects a resolved " +
+                "ticket and clicks the Resolve Selected button", gui.wasMessageCalled);
 
     }
 
@@ -555,6 +557,41 @@ public class TestTicketUI {
     }
 
     // TASK 7 Resolve selected
+
+    @Test(timeout = timeout)
+    public void testDontResolveResolvedTickets() throws Exception{
+
+        insertTestTickets();
+
+        TicketStore store = new TicketStore(Configuration.TEST_DB_URI);
+        TicketController controller = new TicketController(store);
+
+        test_added_second.setResolution("example");
+        test_added_second.setDateResolved(new Date());
+        test_added_second.setStatus(Ticket.TicketStatus.RESOLVED);
+        store.updateTicket(test_added_second);
+
+        TicketGUIMockDialog gui = new TicketGUIMockDialog(controller);
+
+        gui.ticketList.clearSelection();   // Unselect everything
+
+        for (int x = 0 ; x < gui.ticketListModel.size(); x++) {
+            if (gui.ticketListModel.getElementAt(x).getResolution().equals("example")) {
+                gui.ticketList.setSelectedIndex(x);
+            }
+        }
+
+        assertNotNull("Verify the update ticket method in TicketStore is implemented",
+                gui.ticketList.getSelectedValue());
+
+        gui.resolveSelectedButton.doClick();
+
+        // expect a message dialog to be shown
+        assertTrue("Show a message dialog if the user selects a resolved " +
+                "ticket and clicks the Resolve Selected button", gui.wasMessageCalled);
+
+    }
+
 
     @Test(timeout=timeout)
     public void testResolveSelected() throws Exception {
@@ -680,14 +717,18 @@ public class TestTicketUI {
         }
     }
 
+    // # TASK 10 QUIT
 
-    public void testDontResolveResolvedTickets() {
-        fail("implement me");
-    }
+    @Test(timeout = timeout)
+    public void testSaveAndQuit() {
 
+        TicketController mockController = mock(TicketController.class);
+        TicketGUI gui = new TicketGUI(mockController);
 
-    public void saveAndQuit() {
-        fail("implement me");
+        gui.quitButton.doClick();
+        // check if the quitProgram method is called.
+        verify(mockController).quitProgram();
+
     }
 
 
