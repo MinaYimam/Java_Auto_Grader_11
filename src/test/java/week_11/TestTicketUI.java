@@ -681,6 +681,15 @@ public class TestTicketUI {
     }
 
 
+    public void testDontResolveResolvedTickets() {
+        fail("implement me");
+    }
+
+
+    public void saveAndQuit() {
+        fail("implement me");
+    }
+
 
     private class TicketGUIMockDialog extends TicketGUI {
         TicketGUIMockDialog(TicketController t){ super(t);}
