@@ -19,7 +19,7 @@ import static week_11.TicketUtil.sameOpenTicket;
 public class TestTicketStore {
     
     @Before()
-    public void clearTicketStore() throws Exception {
+    public void clearTicketStore() {
         TicketUtil.clearStore();
     }
     
@@ -51,14 +51,14 @@ public class TestTicketStore {
             if (e.getErrorCode() == 19) {  // constraint violation
                 throw e;  // the test will be happy if the exception is thrown
             }
-            // not cool - don't throw and test fails
+            // If an exception is not thrown, test fails
         }
     }
     
     @Test(timeout = timeout)
     public void testInsertToTable() throws Exception {
 
-        int newid;
+        int newid = 0;
         try (Statement statement = DriverManager.getConnection(Configuration.TEST_DB_URI).createStatement())  {
             statement.executeUpdate("INSERT INTO tickets (description, priority, reporter, dateReported, resolution, dateResolved, status)" +
                     " values ('Problem', 4, 'Me', 500000, 'Fixed', 600000, 'RESOLVED' )");
@@ -66,15 +66,15 @@ public class TestTicketStore {
             if (rs.next()) {
                 newid = rs.getInt(1);
             } else {
-                throw new SQLException("no id generated in table");
+                fail("no primary key id generated when new ticket inserted into ticket table");
             }
         } catch (SQLException e ) {
-            throw e;
+            fail("Exception thrown when inserting example ticket " + e);
         }
         
         TicketStore store = new TicketStore(Configuration.TEST_DB_URI);
         Ticket ticket = store.getTicketById(newid);
-        
+
         assertEquals("Problem", ticket.getDescription());
         assertEquals(4, ticket.getPriority());
         assertEquals("Me", ticket.getReporter());
@@ -202,7 +202,7 @@ public class TestTicketStore {
         Ticket test3 = new Ticket("Mouse mat stolen", 3, "3", new Date());
         Ticket test4 = new Ticket("Critical security updates", 1, "3", new Date());
         
-        //Add these tickets
+        // Add these tickets
         
         store.add(test1); store.add(test2); store.add(test3); store.add(test4);
         
@@ -261,7 +261,7 @@ public class TestTicketStore {
         Ticket testPr5 = new Ticket("Mouse mat stolen", 5, "B. Reporter", new Date());
         Ticket testPr3 = new Ticket("Word needs updating", 3, "C. Reporter", new Date());
         
-        //Add these tickets. Assert they are added with lowest priority first
+        // Add these tickets. Assert they are added with lowest priority first
         store.add(testPr1); store.add(testPr5); store.add(testPr3);
         
         List<Ticket> allTickets = store.getAllOpenTickets();
