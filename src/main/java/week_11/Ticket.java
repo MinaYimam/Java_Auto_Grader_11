@@ -50,7 +50,6 @@ public class Ticket {
         this.status = TicketStatus.OPEN;
     }
 
-    
     // TODO create another constructor to create a Ticket from existing Ticket data read from a database
     //  it should be able to set the same fields as the previous constructor, plus set the
     //  ticketID, dateResolved value, resolution string, and status.

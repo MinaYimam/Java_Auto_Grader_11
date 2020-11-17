@@ -1,15 +1,11 @@
 package week_11;
 
-import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import javax.swing.*;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -23,12 +19,11 @@ public class TestTicketUI {
     private Ticket test_added_first, test_added_second, test_added_third;
     private List<Ticket> testTickets = new LinkedList<>();
     
-    @After
-    public void clearDatabase() throws Exception {
+    @Before
+    public void clearDatabase() {
         TicketUtil.clearStore();
     }
-    
-    
+
     
     private void insertTestTickets() throws Exception {
         test_added_first = new Ticket("Server keeps rebooting", 1, "user 1", new Date());
@@ -97,13 +92,12 @@ public class TestTicketUI {
                 Ticket.TicketStatus.class // status
         };
 
-        Object[] parameterNames = Arrays.stream(parameters).map(e -> e.toString()).toArray();
-        Object[] expectedParameterNames = Arrays.stream(expectedParameters).map(e->e.toString()).toArray();
+        Object[] parameterNames = Arrays.stream(parameters).map(Class::toString).toArray();
+        Object[] expectedParameterNames = Arrays.stream(expectedParameters).map(Class::toString).toArray();
         Arrays.sort(parameterNames);
         Arrays.sort(expectedParameterNames);
 
         assertArrayEquals(parameterNames, expectedParameterNames);
-
     }
 
 
@@ -611,25 +605,32 @@ public class TestTicketUI {
 
     // TASK 7 Resolve selected
 
-    @Test(timeout = timeout)
+    @Test//(timeout = timeout)
     public void testDontResolveResolvedTickets() throws Exception{
 
-        insertTestTickets();
-
         TicketStore store = new TicketStore(Configuration.TEST_DB_URI);
+
+        // Add two example tickets, one open, one resolved
+        store.add(new Ticket("mouse", 3, "me", new Date()));
+        Ticket resolvedMouse = new Ticket("MOUSE MAT", 3, "me", new Date());
+        resolvedMouse.setResolution("example");
+        resolvedMouse.setDateResolved(new Date());
+        resolvedMouse.setStatus(Ticket.TicketStatus.RESOLVED);
+        store.add(resolvedMouse);
+
         TicketController controller = new TicketController(store);
-
-        test_added_second.setResolution("example");
-        test_added_second.setDateResolved(new Date());
-        test_added_second.setStatus(Ticket.TicketStatus.RESOLVED);
-        store.updateTicket(test_added_second);
-
         TicketGUIMockDialog gui = new TicketGUIMockDialog(controller);
 
-        gui.ticketList.clearSelection();   // Unselect everything
+        gui.ticketList.clearSelection();   // Unselect everything from list
 
+        gui.descriptionSearchTextBox.setText("mouse");  // one resolved, one open
+        gui.searchDescriptionButton.doClick();
+
+        // select the resolved ticket
         for (int x = 0 ; x < gui.ticketListModel.size(); x++) {
-            if (gui.ticketListModel.getElementAt(x).getResolution().equals("example")) {
+            Ticket ticket = (Ticket) gui.ticketListModel.getElementAt(x);
+            String resolution = ticket.getResolution();
+            if (resolution != null && resolution.equals("example")) {
                 gui.ticketList.setSelectedIndex(x);
             }
         }
@@ -776,6 +777,7 @@ public class TestTicketUI {
     public void testSaveAndQuit() {
 
         TicketController mockController = mock(TicketController.class);
+        when(mockController.loadOpenTicketsFromTicketStore()).thenReturn(new ArrayList<>());
         TicketGUI gui = new TicketGUI(mockController);
 
         gui.quitButton.doClick();

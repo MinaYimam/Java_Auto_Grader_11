@@ -11,10 +11,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static week_11.Configuration.TEST_DB_URI;
 import static week_11.Configuration.timeout;
 
 import static org.junit.Assert.*;
-import static week_11.TicketUtil.sameTicket;
 
 public class TestTicketStore {
     
@@ -41,7 +41,8 @@ public class TestTicketStore {
     
     @Test(timeout = timeout, expected = SQLException.class)
     public void testStatus() throws Exception {
-        
+
+        TicketStore store = new TicketStore(TEST_DB_URI);
         try (Statement statement = DriverManager.getConnection(Configuration.TEST_DB_URI).createStatement())  {
             statement.executeUpdate("INSERT INTO tickets (description, priority, reporter, dateReported, resolution, dateResolved, status)" +
                     " values ('Problem', 4, 'me', 500000, 'fixed', 600000, 'PIZZA' )");
@@ -58,6 +59,8 @@ public class TestTicketStore {
     @Test(timeout = timeout)
     public void testInsertToTable() throws Exception {
 
+        TicketStore store = new TicketStore(Configuration.TEST_DB_URI);
+
         int newid = 0;
         try (Statement statement = DriverManager.getConnection(Configuration.TEST_DB_URI).createStatement())  {
             statement.executeUpdate("INSERT INTO tickets (description, priority, reporter, dateReported, resolution, dateResolved, status)" +
@@ -72,7 +75,6 @@ public class TestTicketStore {
             fail("Exception thrown when inserting example ticket " + e);
         }
         
-        TicketStore store = new TicketStore(Configuration.TEST_DB_URI);
         Ticket ticket = store.getTicketById(newid);
 
         assertEquals("Problem", ticket.getDescription());

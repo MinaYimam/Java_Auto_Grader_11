@@ -28,7 +28,7 @@ public class TicketStore {
               dateResolved, number, the long time value of a Date object, representing the date the ticket was marked as resolved. May be null.
               status, text, either "OPEN" or "RESOLVED". These are the only acceptable values. Can't be null.
         */
-        
+
     }
     
     
@@ -40,11 +40,12 @@ public class TicketStore {
         //  Create Ticket object for each row in the ResultSet
         //  Return a List of these Ticket objects
         //  If there are no Tickets in the database, return an empty List.
-        
+
         // Catch any SQL errors and use System.err.print to print an error message. If an SQL exception is thrown, return null.
-        
+
         return null;   // replace with your code.
     }
+
     
     
     /** Add ticket to the database. */
@@ -55,9 +56,10 @@ public class TicketStore {
         //  Write all of the fields a Ticket could have:
         //  description, priority, reporter, dateReported, resolution, dateResolved and status.
     
-        // Let any SQLExceptions be thrown from this method. The rest of the
+        // Let any SQLExceptions due to constraint violations be thrown from this method. The rest of the
         // code will interpret a SQLException as meaning that the data in the ticket
         // was not valid, for example the priority was -10 or the status was "CAT"
+
     }
 
 
@@ -71,7 +73,6 @@ public class TicketStore {
 
         return null; // TODO replace with your code.
 
-
     }
     
     
@@ -81,8 +82,8 @@ public class TicketStore {
         //  modify row in the database to set the values contained in the Ticket object
         //  this method can be used to resolve a ticket.
     
-        // Catch any SQLExceptions. Use System.err.print to print an error message if an exception if thrown.
-        
+        // Catch any SQLException errors. Use System.err.print to print an error message if an exception if thrown.
+
     }
     
     
@@ -94,8 +95,8 @@ public class TicketStore {
         //  The search should return partial matches.
         //  A search for "server" should return a ticket with description "The Windows Server is down"
     
-        // Catch any SQLExceptions. If any exception is thrown, use System.err.print to print an error message and return null.
-        
+        // Catch any SQLException errors. If any exception is thrown, use System.err.print to print an error message and return null.
+
         return null;  // TODO replace with your code.
     }
 

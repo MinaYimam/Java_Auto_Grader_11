@@ -1,11 +1,15 @@
 package week_11;
 
 import javax.swing.*;
+import java.util.Date;
+import java.util.List;
 
 
 public class TicketGUI extends JFrame {
     
     // TODO complete the tasks described in Lab 11 Questions.md
+
+    // You don't need to modify the form or the GUI design in TicketGUI.form
     
     protected JPanel mainPanel;
     
@@ -35,10 +39,11 @@ public class TicketGUI extends JFrame {
     
     // Resolving
     protected JButton resolveSelectedButton;
-    
-    protected DefaultListModel<Ticket> ticketListModel;
-    
-    // Messages that will be shown in ticketListStatusDescription
+
+    // TODO initialize this in the constructor
+    protected DefaultListModel ticketListModel;
+
+    // Strings for messages that will be shown in ticketListStatusDescription
     // TODO Use these instead of your own Strings. The tests expect you to use these constants
     static final String ALL_TICKETS = "Showing all open tickets";
     static final String TICKETS_MATCHING_SEARCH_DESCRIPTION = "Open tickets matching search description";
@@ -48,7 +53,7 @@ public class TicketGUI extends JFrame {
     
     
     // A reference to the TicketProgram object
-    // The GUI will call the methods in this class to add, search for, and resolve tickets.
+    // This GUI will be able to call the methods in this class to add, search for, and update tickets.
     // See example in quitProgram method.
     private TicketController controller;
     
@@ -72,15 +77,15 @@ public class TicketGUI extends JFrame {
         // TODO configure JComboBox
 
         // TODO Configure JList, JList model
-        
-        // TODO show all of the open tickets in the JList
-        
+
         // TODO add action listeners for each button
+
+        // TODO show all of the open tickets in the JList
+
     }
-    
-    
-    
-    // Call this method to quit the program. The tests expect you to use it.
+
+
+    // Call this method to quit the program.
     // You do not need to modify this method.
     protected void quitProgram() {
         controller.quitProgram();    // Ask the controller to quit the program.

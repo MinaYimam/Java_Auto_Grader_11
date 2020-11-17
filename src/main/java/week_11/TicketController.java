@@ -3,7 +3,9 @@ package week_11;
 import java.sql.SQLException;
 import java.util.List;
 
-/** Manages interactions between GUI and Ticket Store DB */
+/** Manages interactions between GUI and Ticket Store DB
+ *
+ * You do not need to modify this file. */
 
 public class TicketController {
     
@@ -12,8 +14,7 @@ public class TicketController {
     TicketController(TicketStore store) {
         ticketStore = store;
     }
-    
-    
+
     protected List<Ticket> loadOpenTicketsFromTicketStore() {
         List<Ticket> openTickets = ticketStore.getAllOpenTickets();
         return openTickets;

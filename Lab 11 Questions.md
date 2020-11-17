@@ -67,10 +67,9 @@ Add a listener to `showAllTicketsButton` to show all the current open tickets in
 
 Finish the addTicket method in TicketStore.  This method should write a new row to the database for the new Ticket. 
  
- Even though this method will only be used for adding new, open tickets, you should write this 
- method so that it would work to add a new resolved ticket to the database.
+Even though this method will only be used for adding new, open tickets, you should write this method so that it would work to add a new resolved ticket to the database.
  
- The new Ticket may have data that violates the database constraints and cause a SQLException to be thrown. Let this exception be thrown from the method. Code in TicketController checks for this exception. 
+The new Ticket may have data that violates the database constraints and cause a SQLException to be thrown. Let this exception be thrown from the method. Code in TicketController and the tests check for SQLException. 
 
 When the new ticket has been added, SQLite generates an ID number - the id column - for the new ticket. You need to update your Ticket object - the argument to the addTicket method using its `setTicketID` method to store the new ID.  
 
@@ -78,10 +77,10 @@ Here is some example code that fetches the primary key value generated from an S
 
 ```
 // create a prepared statement to insert data
-preparedStatement.executeUpdate();
-ResultSet keys = preparedStatement.getGeneratedKeys();
-keys.next();
-int id = keys.getInt(1);
+preparedStatement.executeUpdate();   // excute 
+ResultSet keys = preparedStatement.getGeneratedKeys();  // ask the database for generated primary key values
+keys.next();   // move to first row of the result set
+int id = keys.getInt(1);   // get value from first column 
 
 // Either use the ticket object's setTicketID(id); method
 // or create a new Ticket using your new constructor from part 2.   
@@ -104,9 +103,11 @@ Use the `showMessageDialog` method in TicketGUI to show the message dialog.
 
 Finish the getTicketById method in TicketStore. If there is a row in the database with id equal to the id given, return a new Ticket created from that row.  If there is no matching row, return null.
 
+This method should return the matching ticket, regardless of whether the ticket is OPEN or RESOLVED. 
+
 Implement a listener for the `searchIdButton`. When this button is clicked, read the text in `idSearchTextBox`. Verify data has been entered, and that it is a positive integer. 
 
-If there is no data or the data is invalid (not an integer, or a negative integer) the `ticketList` should show an empty list, and set the `ticketListStatusDescription` JLabel to the String `INVALID_TICKET_ID`
+If there is no data, or the data is invalid (not an integer, or a negative integer) the `ticketList` should show an empty list, and set the `ticketListStatusDescription` JLabel to the String `INVALID_TICKET_ID`
 
 If the ID is a positive integer then use `controller` to search for the matching ticket.
 
@@ -138,7 +139,7 @@ Do not show any message dialogs.
 
 ### Task 9: Resolve Ticket
 
-Finish the updateTicket method in TicketStore. This will find the row in the database corresponding to this ticket, and update the columns to the data stored in the Ticket object. 
+Finish the updateTicket method in TicketStore. This will find the row in the database corresponding to this ticket, and update the columns to the data stored in the Ticket object.  This method will set all the fields in the database for the Ticket object except for the id field. 
 
 To resolve Tickets and remove them from the open ticket list, the user will select one Ticket in `ticketList` and click the `resolveSelectedButton` button.
 
@@ -153,7 +154,7 @@ The user will be able to click the Cancel button, if they don't want to resolve 
 Or, the user will type in a resolution String and click the OK button. Do the following tasks:
 
 * Use the String entered to set the resolution of the ticket. 
-* Set the date it was resolved to the current date/time 
+* Set the date it was resolved to the current Date 
 * Set the status to TicketStatus.RESOLVED
 * Call controller's `updateTicket` method to modify this Ticket's entry in the database. 
 * Display a message dialog with a confirmation message. 
@@ -163,6 +164,6 @@ Or, the user will type in a resolution String and click the OK button. Do the fo
 
 ### Task 10: Save and Quit 
 
-Add a listener to `saveAndQuitButton`. This should call the `controller.quitProgram()` to close the program.
+Add a listener to `saveAndQuitButton`. This should call the `controller.quitProgram()` method to close the program.
 
 Do not display any dialogs. 
