@@ -44,7 +44,7 @@ public class TestTicketStore {
 
         TicketStore store = new TicketStore(TEST_DB_URI);
         try (Statement statement = DriverManager.getConnection(Configuration.TEST_DB_URI).createStatement())  {
-            statement.executeUpdate("INSERT INTO tickets (description, priority, reporter, dateReported, resolution, dateResolved, status)" +
+            statement.executeUpdate("INSERT INTO ticket (description, priority, reporter, dateReported, resolution, dateResolved, status)" +
                     " values ('Problem', 4, 'me', 500000, 'fixed', 600000, 'PIZZA' )");
         } catch (SQLException e) {
             // if DB is configured correctly, a SQLException should be thrown.
@@ -63,7 +63,7 @@ public class TestTicketStore {
 
         int newid = 0;
         try (Statement statement = DriverManager.getConnection(Configuration.TEST_DB_URI).createStatement())  {
-            statement.executeUpdate("INSERT INTO tickets (description, priority, reporter, dateReported, resolution, dateResolved, status)" +
+            statement.executeUpdate("INSERT INTO ticket (description, priority, reporter, dateReported, resolution, dateResolved, status)" +
                     " values ('Problem', 4, 'Me', 500000, 'Fixed', 600000, 'RESOLVED' )");
             ResultSet rs = statement.getGeneratedKeys();
             if (rs.next()) {
