@@ -72,7 +72,17 @@ Finish the addTicket method in TicketStore.  This method should write a new row 
  
 Even though this method will only be used for adding new, open tickets, you should write this method so that it would work to add a new resolved ticket to the database.
  
-The new Ticket may have data that violates the database constraints and cause a SQLException to be thrown. Let this exception be thrown from the method. Code in TicketController and the tests check for SQLException. 
+The new Ticket may have data that violates the database constraints and cause a SQLException to be thrown. You should use try-with-resources to ensure database resources are closed, so your code will have try and catch blocks. If a SQLException is thrown, catch it as usual, and then throw the exception again. Code in TicketController and the tests check for SQLException. 
+
+To throw an exception from a catch block, use the throw keyword, for example, 
+
+```
+try ( /* connect to database, prepare statement */ ) {
+   // database code here
+} catch (SQLException e) {
+  throw e;
+}
+```
 
 When the new ticket has been added, SQLite generates an ID number - the id column - for the new ticket. You need to update your Ticket object - the argument to the addTicket method using its `setTicketID` method to store the new ID.  
 

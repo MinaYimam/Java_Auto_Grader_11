@@ -41,8 +41,8 @@ public class TicketStore {
         //  Create Ticket object for each row in the ResultSet
         //  Return a List of these Ticket objects
         //  If there are no Tickets in the database, return an empty List.
-
-        // Catch any SQL errors and use System.err.print to print an error message. If an SQL exception is thrown, return null.
+        //  Catch any SQL errors and use System.err.print to print an error message.
+        //  If an SQL exception is thrown, return null.
 
         return null;   // replace with your code.
     }
@@ -57,9 +57,16 @@ public class TicketStore {
         //  Write all of the fields a Ticket could have:
         //  description, priority, reporter, dateReported, resolution, dateResolved and status.
     
-        // Let any SQLExceptions due to constraint violations be thrown from this method. The rest of the
+        // Re-throw any SQLExceptions due to constraint violations from this method. The rest of the
         // code will interpret a SQLException as meaning that the data in the ticket
         // was not valid, for example the priority was -10 or the status was "CAT"
+
+        // From a catch block, use the throw keyword to throw the exception, for example,
+
+        // catch (SQLException sqle) {
+        //    throw sqle;
+        // }
+
 
     }
 
