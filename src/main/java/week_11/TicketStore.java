@@ -18,7 +18,7 @@ public class TicketStore {
     TicketStore(String databaseURI) {
         this.dbURI = databaseURI;
         
-        /* TODO create the Ticket table in the database given by databaseURI.
+        /* TODO create a ticket table in the database given by databaseURI.
              It should have these columns, types and constraints, in this order:
               id, the primary key  (you will let SQLite autogenerate the values for this column for you)
               description, text, Can't be null.
@@ -57,15 +57,24 @@ public class TicketStore {
         //  Write all of the fields a Ticket could have:
         //  description, priority, reporter, dateReported, resolution, dateResolved and status.
     
-        // Re-throw any SQLExceptions due to constraint violations from this method. The rest of the
-        // code will interpret a SQLException as meaning that the data in the ticket
-        // was not valid, for example the priority was -10 or the status was "CAT"
+        // TODO Re-throw any SQLExceptions due to constraint violations from this method. The rest of the
+        //  code will interpret a SQLException as meaning that the data in the ticket
+        //  was not valid, for example the priority was -10 or the status was "CAT"
 
         // From a catch block, use the throw keyword to throw the exception, for example,
 
-        // catch (SQLException sqle) {
-        //    throw sqle;
-        // }
+        //        String insertSQL = ""; //  write SQL statement here
+        //
+        //        try (Connection conn = DriverManager.getConnection(dbURI);
+        //            PreparedStatement preparedStatement = conn.prepareStatement(insertSQL)) {
+        //
+        //            // insert data about ticket into database
+        //
+        //        }
+        //        catch (SQLException sqle) {
+        //            // use the throw keyword to throw the exception for the caller to handle
+        //            throw sqle;
+        //        }
 
 
     }
