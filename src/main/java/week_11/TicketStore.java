@@ -22,6 +22,7 @@ public class TicketStore {
              It should have these columns, types and constraints, in this order:
               id, the primary key  (you will let SQLite autogenerate the values for this column for you)
               description, text, Can't be null.
+              reporter, text. Can't be null.
               priority, a number in the range 1-5. Can't be null. Add constraints to prohibit values outside the range 1-5.
               dateReported, number, the long time value of a Date object, representing the date the ticket was created. Can't be null.
               resolution, text. May be null.
