@@ -16,7 +16,10 @@ For this lab, you will implement a GUI for the program.
 
 ### Task 1: 
 
-Set up your database. In the constructor of TicketStore, create the ticket table, if it does not exist. 
+Set up your database. In the constructor of TicketStore, create a ticket table, if it does not exist. 
+
+The table will have the name **ticket**.
+
 It should have these columns, types and constraints, in this order:
 
 * id, an integer number, the primary key of the table. SQLite should autogenerate the values for this column.
