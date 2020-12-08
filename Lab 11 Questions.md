@@ -95,8 +95,7 @@ ResultSet keys = preparedStatement.getGeneratedKeys();  // ask the database for 
 keys.next();   // move to first row of the result set
 int id = keys.getInt(1);   // get value from first column 
 
-// Either use the ticket object's setTicketID(id); method
-// or create a new Ticket using your new constructor from part 2.   
+// use the ticket object's setTicketID(id); method to set the ticket's ID value.
 ```
 
 Note that several tests will fail if the Ticket object's ID is not set. 
