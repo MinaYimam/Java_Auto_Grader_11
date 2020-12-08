@@ -219,13 +219,13 @@ public class TestTicketStore {
         // Empty string - should return empty list
         results = store.searchByDescription("");
         assertNotNull("A search for an empty string should return an empty list", results);
-        assertEquals("A search for an empty string should return an empty list", results.size(), 0);   // No results
+        assertEquals("A search for an empty string should return an empty list", 0, results.size());   // No results
         
         
         // Null string - should return empty list
         results = store.searchByDescription(null);
         assertNotNull("A search for null string should return an empty list", results);
-        assertEquals("A search for null string should return an empty list", results.size(), 0);   // No results
+        assertEquals("A search for null string should return an empty list", 0, results.size());   // No results
         
     }
     

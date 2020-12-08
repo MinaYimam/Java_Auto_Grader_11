@@ -15,7 +15,7 @@ public class TicketUtil {
     public static void clearStore() {
         try (Connection con = DriverManager.getConnection(Configuration.TEST_DB_URI);
              Statement statement = con.createStatement()) {
-            statement.execute("DROP TABLE IF EXISTS tickets");
+            statement.execute("DROP TABLE IF EXISTS ticket");
         } catch (SQLException e) {
             System.out.println("Error clearing data from test database. Does the database exist?");
         }
@@ -110,7 +110,7 @@ public class TicketUtil {
     public static void printAllTickets(String db) {
 
         try (Statement s = DriverManager.getConnection(db).createStatement()) {
-            ResultSet rs = s.executeQuery("SELECT * FROM tickets");
+            ResultSet rs = s.executeQuery("SELECT * FROM ticket");
             ResultSetMetaData md = rs.getMetaData();
             int columnCount = md.getColumnCount();
 
