@@ -90,7 +90,8 @@ Here is some example code that fetches the primary key value generated from an S
 
 ```
 // create a prepared statement to insert data
-preparedStatement.executeUpdate();   // excute 
+// set placeholders
+preparedStatement.executeUpdate();   // execute statement, database will be updated
 ResultSet keys = preparedStatement.getGeneratedKeys();  // ask the database for generated primary key values
 keys.next();   // move to first row of the result set
 int id = keys.getInt(1);   // get value from first column 
