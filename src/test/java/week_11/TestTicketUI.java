@@ -455,34 +455,33 @@ public class TestTicketUI {
         gui.descriptionSearchTextBox.setText("mouse");
         gui.searchDescriptionButton.doClick();
 
-        // List should show two tickets,
-        //        test_added_second = new Ticket("Mouse stolen", 5, "user 2", new Date());
-        //        test_added_third = new Ticket("Mouse mat stolen", 3, "user 2", new Date());
+        // List should show two tickets, in this order. Priority 1 is first, priority 5 is last
+        //        test_added_third = new Ticket("Mouse mat stolen", 3, "user 2", new Date());  // has id 3
+        //        test_added_second = new Ticket("Mouse stolen", 5, "user 2", new Date());     // has id 2
 
         try {
-
-            Ticket expected1 = (Ticket) ticketList.getModel().getElementAt(0);
-            Ticket expected3 = (Ticket) ticketList.getModel().getElementAt(1);
+            Ticket expectedId3 = (Ticket) ticketList.getModel().getElementAt(0);
+            Ticket expectedId2 = (Ticket) ticketList.getModel().getElementAt(1);
 
             assertTrue("After searching for 'mouse', all matching tickets should be" +
-                    " shown in the JList", TicketUtil.sameTicket(test_added_second, expected1));
+                    " shown in the JList", TicketUtil.sameTicket(test_added_second, expectedId2));
             assertTrue("After searching for 'mouse', all matching tickets should be" +
-                    " shown in the JList", TicketUtil.sameTicket(test_added_third, expected3));
+                    " shown in the JList", TicketUtil.sameTicket(test_added_third, expectedId3));
         } catch(IndexOutOfBoundsException e) {
             fail("Create a data model for your JList. All matching tickets should be shown in JList after the search.");
         }
         
-        // Update search status
+        // Verify search status message is shown
 
         assertEquals("After ticket found by ID, update the ticketListStatusDescription JLabel. Use the TicketGUI.OPEN_TICKETS_MATCHING_SEARCH_DESCRIPTION String.",
                 TicketGUI.TICKETS_MATCHING_SEARCH_DESCRIPTION, gui.ticketListStatusDescription.getText());
 
-        // Search for ticket "Server keeps rebooting", should now only show ticket 2 in the list
+        // Search for ticket "Server keeps rebooting", should now only show ticket with id=2 in the list
 
         gui.descriptionSearchTextBox.setText("Server keeps rebooting");
         gui.searchDescriptionButton.doClick();
 
-        // List should now only show ticket
+        // List should now only show this ticket
         //   test_added_first = new Ticket("Server keeps rebooting", 1, "user 1", new Date());
 
         Ticket expected2 = (Ticket) ticketList.getModel().getElementAt(0);
@@ -523,7 +522,7 @@ public class TestTicketUI {
         assertEquals("Update the ticketListStatusDescription JLabel to " + TicketGUI.ALL_TICKETS,
                 TicketGUI.ALL_TICKETS, gui.ticketListStatusDescription.getText());
 
-        assertEquals("When show all tickets is clicked, show all tickets in the JList", 3, ticketList.getModel().getSize());
+        assertEquals("When show all tickets button is clicked, show all tickets in the JList", 3, ticketList.getModel().getSize());
 
     }
 

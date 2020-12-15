@@ -57,17 +57,17 @@ public class TestTicketStore {
     }
     
     @Test(timeout = timeout)
-    public void testInsertToTable() throws Exception {
+    public void testInsertToTable() {
 
         TicketStore store = new TicketStore(Configuration.TEST_DB_URI);
 
-        int newid = 0;
+        int newId = 0;
         try (Statement statement = DriverManager.getConnection(Configuration.TEST_DB_URI).createStatement())  {
             statement.executeUpdate("INSERT INTO ticket (description, priority, reporter, dateReported, resolution, dateResolved, status)" +
                     " values ('Problem', 4, 'Me', 500000, 'Fixed', 600000, 'RESOLVED' )");
             ResultSet rs = statement.getGeneratedKeys();
             if (rs.next()) {
-                newid = rs.getInt(1);
+                newId = rs.getInt(1);
             } else {
                 fail("no primary key id generated when new ticket inserted into ticket table");
             }
@@ -75,13 +75,13 @@ public class TestTicketStore {
             fail("Exception thrown when inserting example ticket " + e);
         }
         
-        Ticket ticket = store.getTicketById(newid);
+        Ticket ticket = store.getTicketById(newId);
 
         assertEquals("Problem", ticket.getDescription());
         assertEquals(4, ticket.getPriority());
         assertEquals("Me", ticket.getReporter());
         assertEquals("Fixed", ticket.getResolution());
-        assertEquals(newid, ticket.getTicketID());
+        assertEquals(newId, ticket.getTicketID());
         assertEquals(Ticket.TicketStatus.RESOLVED, ticket.getStatus());
         assertEquals(new Date(500000), ticket.getDateReported());
         assertEquals(new Date(600000), ticket.getDateResolved());
@@ -135,7 +135,7 @@ public class TestTicketStore {
     
     
     @Test(timeout=timeout)
-    public void testSearchDescriptionEmptyStore() throws Exception {
+    public void testSearchDescriptionEmptyStore() {
         TicketStore store = new TicketStore(Configuration.TEST_DB_URI);
         
         // Any searches on an empty list should return an empty list.
