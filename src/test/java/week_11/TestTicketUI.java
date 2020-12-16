@@ -752,7 +752,7 @@ public class TestTicketUI {
         TicketController controller2 = new TicketController(store2);
         
         // The tickets should have been read from a file, and be available.
-        List<Ticket> ticketList_relaunch = controller.loadOpenTicketsFromTicketStore();
+        List<Ticket> ticketList_relaunch = controller.loadAllOpenTicketsFromStore();
 
         assertEquals("There should be the same number of open tickets after your app is restarted. " +
                         "Save all open tickets to a file when app closes, read the tickets from the file when it restarts.",
@@ -776,7 +776,7 @@ public class TestTicketUI {
     public void testSaveAndQuit() {
 
         TicketController mockController = mock(TicketController.class);
-        when(mockController.loadOpenTicketsFromTicketStore()).thenReturn(new ArrayList<>());
+        when(mockController.loadAllOpenTicketsFromStore()).thenReturn(new ArrayList<>());
         TicketGUI gui = new TicketGUI(mockController);
 
         gui.quitButton.doClick();

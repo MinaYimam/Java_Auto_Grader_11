@@ -64,9 +64,10 @@ The selection model should be `SINGLE_SELECTION`.
 
 ### Task 5: Get all the open tickets for ticketList JList
 
-In TicketStore, finish the getAllOpenTickets method. This will return all tickets with status="OPEN", sorted in priority order.  Tickets with priority=1 will be at the start, tickets with priority=5 will be at the end. 
+In TicketStore, finish the `getAllOpenTickets` method. This will return all tickets with status="OPEN", sorted in priority order.  
+Tickets with priority=1 will be first, tickets with priority=5 will be last. 
 
-In TicketGUI, use the controller object's `loadOpenTicketsFromTicketStore` method to request all the current open Tickets.
+In TicketGUI, use the controller object's `loadAllOpenTicketsFromStore` method to request all the current open Tickets.
 Configure the `ticketList` JList to display this list of open Ticket objects when the GUI first opens.
 
 Add a listener to `showAllTicketsButton` to show all the current open tickets in `ticketList`.  The user may click this after searching for tickets. 
@@ -90,6 +91,23 @@ try ( /* connect to database, prepare statement */ ) {
   throw e;
 }
 ```
+
+A new Ticket does not have a resolution, or a resolved date.  You can set a null value for a String column, but you will need to use a special method to set a long value to null. The long type is a primitive type and can't be null in Java, even though a number/integer column in SQLite may contain a null value.
+
+```
+// Example code - set the column numbers to match your database 
+
+// this works even if the ticket's resolution is null
+preparedStatement.setString(1, ticket.getResolution()); 
+
+// this will error if ticket's resolved date is null, the call to getTime() will throw 
+// a NullPointerException
+preparedStatement.setLong(1, ticket.getResolvedDate().getTime());
+
+// So you'll need to check if the resolved date is null, and if so, set a null value for that column
+preparedStatement.setNull(1, Types.INTEGER);   // Use the correct column number for your DB. In SQLite, Integer and Long are the same thing. 
+```
+
 
 When the new ticket has been added, SQLite generates an ID number - the id column - for the new ticket. You need to update your Ticket object to store this new ID. You can use Ticket objects' `setTicketID` method to store the new ID.  
 

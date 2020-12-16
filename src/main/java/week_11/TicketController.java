@@ -15,7 +15,7 @@ public class TicketController {
         ticketStore = store;
     }
 
-    protected List<Ticket> loadOpenTicketsFromTicketStore() {
+    protected List<Ticket> loadAllOpenTicketsFromStore() {
         List<Ticket> openTickets = ticketStore.getAllOpenTickets();
         return openTickets;
     }
