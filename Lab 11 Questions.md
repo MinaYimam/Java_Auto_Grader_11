@@ -17,9 +17,13 @@ New tickets need to store
 
 When a Ticket is resolved (fixed or becomes a non-issue), the ticket's status is set to RESOLVED, the reason for resolving the ticket is recorded, and the resolvedDate is stored. 
 
+The resolution, and the data resolved also need to be stored. 
+
 For this lab, you will implement a GUI and database for the program. 
 
 ### Task 1: 
+
+For all database interactions in TicketStore, use the dbURI variable that is created and initialized for you in the constructor.
 
 Set up your database. In the constructor of TicketStore, create a ticket table, if it does not exist. 
 
