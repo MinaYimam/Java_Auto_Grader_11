@@ -1,8 +1,7 @@
 package week_11;
 
 import javax.swing.*;
-import java.util.Date;
-import java.util.List;
+import java.awt.*;
 
 
 public class TicketGUI extends JFrame {
@@ -40,11 +39,12 @@ public class TicketGUI extends JFrame {
     // Resolving
     protected JButton resolveSelectedButton;
 
-    // TODO initialize this in the constructor
-    protected DefaultListModel ticketListModel;
+    // TODO initialize this DefaultListModel in the constructor
+    //  Use this DefaultListModel for the JList ticketList
+    protected DefaultListModel<Ticket> ticketListModel;
 
     // Strings for messages that will be shown in ticketListStatusDescription
-    // TODO Use these instead of your own Strings. The tests expect you to use these constants
+    // TODO Use these instead of your own Strings. The tests expect you to use these constants.
     static final String ALL_TICKETS = "Showing all open tickets";
     static final String TICKETS_MATCHING_SEARCH_DESCRIPTION = "Open tickets matching search description";
     static final String TICKET_MATCHING_ID = "Ticket matching ID";
@@ -52,7 +52,7 @@ public class TicketGUI extends JFrame {
     static final String INVALID_TICKET_ID = "Invalid ticket ID";
     
     
-    // A reference to the TicketProgram object
+    // A reference to the TicketController object
     // This GUI will be able to call the methods in this class to add, search for, and update tickets.
     // See example in quitProgram method.
     private TicketController controller;
@@ -60,16 +60,19 @@ public class TicketGUI extends JFrame {
     
     TicketGUI(TicketController controller) {
 
-        /* In the rest of your code, when you need to send
+
+        this.controller = controller;
+
+        /* In your code, when you need to send
         a message to the TicketProgram controller, use this controller object. So if you need
         to add a new ticket, you'll create a new Ticket object, then ask the TicketProgram controller
         to add the new Ticket to the database with
         controller.newTicket(myNewTicket);  */
 
-        this.controller = controller;
-        
+        // GUI window setup and configuration
         setTitle("Support Ticket Manager");
         setContentPane(mainPanel);
+        setPreferredSize(new Dimension(700, 600));
         pack();
         setVisible(true);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -80,7 +83,7 @@ public class TicketGUI extends JFrame {
 
         // TODO add action listeners for each button
 
-        // TODO show all of the open tickets in the JList
+        // TODO show all of the open tickets in priority order in the JList
 
     }
 
