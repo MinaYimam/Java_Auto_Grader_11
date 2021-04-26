@@ -65,19 +65,8 @@ The selection model should be `SINGLE_SELECTION`.
 
 `ticketList` will be able to show any list of Tickets, for example, all the open Tickets, or only Tickets that match a search.
 
-
-### Task 5: Get all the open tickets for ticketList JList
-
-In TicketStore, finish the `getAllOpenTickets` method. This will return all tickets with status="OPEN", sorted in priority order.  
-Tickets with priority=1 will be first, tickets with priority=5 will be last. 
-
-In TicketGUI, use the controller object's `loadAllOpenTicketsFromStore` method to request all the current open Tickets.
-Configure the `ticketList` JList to display this list of open Ticket objects when the GUI first opens.
-
-Add a listener to `showAllTicketsButton` to show all the current open tickets in `ticketList`.  The user may click this after searching for tickets. 
  
- 
-### Task 6: Add a new Ticket
+### Task 5: Add a new Ticket
 
 Finish the addTicket method in TicketStore.  This method should write a new row to the database for the new Ticket. 
  
@@ -141,6 +130,17 @@ If data is missing (no reporter entered, or no description entered, or no select
 Use the `showMessageDialog` method in TicketGUI to show the message dialog. 
  
  
+### Task 6: Get all the open tickets for ticketList JList
+
+In TicketStore, finish the `getAllOpenTickets` method. This will return all tickets with status="OPEN", sorted in priority order.  
+Tickets with priority=1 will be first, tickets with priority=5 will be last. 
+
+In TicketGUI, use the controller object's `loadAllOpenTicketsFromStore` method to request all the current open Tickets.
+Configure the `ticketList` JList to display this list of open Ticket objects when the GUI first opens.
+
+Add a listener to `showAllTicketsButton` to show all the current open tickets in `ticketList`.  The user may click this after searching for tickets. 
+
+
 ### Task 7: Search by ID
 
 Finish the getTicketById method in TicketStore. If there is a row in the database with id equal to the id given, return a new Ticket created from that row.  If there is no matching row, return null.
