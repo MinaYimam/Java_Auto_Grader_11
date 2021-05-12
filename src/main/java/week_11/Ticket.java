@@ -49,7 +49,16 @@ public class Ticket {
         this.dateReported = date;
         this.status = TicketStatus.OPEN;
     }
-
+    public Ticket(int id, String desc, int p, String rep, Date dateReported, String res, Date dateResolved, TicketStatus status){
+        this.ticketID = id;
+        this.description = desc;
+        this.priority = p;
+        this.reporter = rep;
+        this.dateReported = dateReported;
+        this.resolution = res;
+        this.dateResolved = dateResolved;
+        this.status = status;
+    }
     // TODO create another constructor to create a Ticket from existing Ticket data read from a database
     //  it should be able to set the same fields as the previous constructor, plus set the
     //  ticketID, dateResolved value, resolution string, and status.

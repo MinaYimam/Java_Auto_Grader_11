@@ -1,7 +1,10 @@
 package week_11;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Date;
 
 
 /**
@@ -17,7 +20,23 @@ public class TicketStore {
     
     TicketStore(String databaseURI) {
         this.dbURI = databaseURI;
-        
+        String createtable = "CREATE TABLE IF NOT EXISTS ticket " +
+                "(id INTEGER PRIMARY KEY, " +
+                "description TEXT NOT NULL," +
+                "reporter TEXT NOT NULL," +
+                "priority INTEGER NOT NULL CHECK(priority >= 1 AND priority <= 5)," +
+                "dateReported INTEGER  NOT NULL," +
+                "resolution TEXT," +
+                "dateResolved INTEGER," +
+                "status TEXT NOT NULL CHECK(status = 'OPEN' OR status = 'RESOLVED'))";
+        try(Connection connection = DriverManager.getConnection(dbURI);
+        Statement statement = connection.createStatement()){
+            statement.execute(createtable);
+        }
+        catch(SQLException e){
+            System.out.println("Error creating table because" + e);
+        }
+
         /* TODO create a ticket table in the database given by databaseURI.
              It should have these columns, types and constraints, in this order:
               id, the primary key  (you will let SQLite autogenerate the values for this column for you)
@@ -51,6 +70,36 @@ public class TicketStore {
     
     /** Add ticket to the database. */
     public void add(Ticket newTicket) throws SQLException {
+        String insertrow = "INSERT INTO ticket " +
+                "(description , reporter, priority , dateReported, resolution, dateResolved , status) VALUES (?, ? ,?,?,?,?,? )";
+
+
+        Connection connection = DriverManager.getConnection(dbURI);
+            PreparedStatement statement = connection.prepareStatement(insertrow);{
+            statement.setString(1,newTicket.getDescription());
+            statement.setString(2,newTicket.getReporter());
+            statement.setInt(3,newTicket.getPriority());
+            Date treporteddate = newTicket.getDateReported();
+            statement.setLong(4,treporteddate.getTime());
+            statement.setString(5,newTicket.getResolution());
+            Date tresolveddate = newTicket.getDateResolved();
+            if(tresolveddate == null){
+                statement.setDate(6,null);
+
+            }
+            else{statement.setLong(6,tresolveddate.getTime());
+            }
+            Ticket.TicketStatus newticketstatus = newTicket.getStatus();
+            String status = newticketstatus.toString();
+            statement.setString(7,status);
+            statement.execute(insertrow);
+            ResultSet keys = statement.getGeneratedKeys();
+            keys.next();
+            int id = keys.getInt(1);
+            newTicket.setTicketID(id);
+            }
+
+
         
         // TODO insert a new row in the database for this ticket.
         //  Write the data from the fields in the newTicket object.
@@ -81,6 +130,33 @@ public class TicketStore {
 
 
     public Ticket getTicketById(int id) {
+        String getticketbyid = "SELECT * FROM ticket WHERE id = ?";
+        try(Connection connection = DriverManager.getConnection(dbURI);
+            PreparedStatement statement = connection.prepareStatement(getticketbyid)){
+           // statement.execute();
+            statement.setInt(1,id);
+            ResultSet ticket = statement.executeQuery();
+            if (ticket.next()){
+              String description = ticket.getString("description");
+              String repoerter = ticket.getString("reporter");
+              int priority = ticket.getInt("priority");
+              Date dateReported = new Date(ticket.getLong("dateReported"));
+              String resolution = ticket.getString("resolution");
+              Date dateResolved = new Date(ticket.getLong("dateResolved"));
+              String stringstatus = ticket.getString("status");
+              Ticket.TicketStatus status = Ticket.TicketStatus.valueOf(stringstatus);
+              Ticket nticket = new Ticket(id, description, priority, repoerter, dateReported,resolution,dateResolved,status);
+              return nticket;
+            }
+            else {
+                return null;
+            }
+            //create a ticket ibject
+            //return that ticket
+        }
+        catch(SQLException e){
+            System.out.println("Error creating table because" + e);
+        }
        
         // TODO query the database to find the ticket with this id.
         //  if the ticket is found, then create a Ticket object and return it
@@ -105,6 +181,40 @@ public class TicketStore {
     
     
     public List<Ticket> searchByDescription(String description) {
+        if(description == null || description.isEmpty()){
+            return Collections.emptyList();
+        }
+        String searchbydescr = "SELECT * FROM Ticket WHERE description LIKE ? ORDER BY priority";
+        try(Connection connection = DriverManager.getConnection(dbURI);
+        PreparedStatement preparedStatement = connection.prepareStatement(searchbydescr)){
+            preparedStatement.setString(1, "%"+ description + "%");
+            ResultSet tickets = preparedStatement.executeQuery();
+            List<Ticket> matches = new ArrayList<>();
+                    while (tickets.next()){
+                        int id = tickets.getInt("id");
+                        String desc = tickets.getString("description");
+                        int priority = tickets.getInt("priority");
+                        String reporter = tickets.getString("reporter");
+                        long datereoprtedtimestamp = tickets.getLong("dateReported");
+                        Date datereported = new Date(datereoprtedtimestamp);
+                        String resolution = tickets.getString("resolution");
+                        long dateresolvedtimestamp = tickets.getLong("dateResolved");
+                        Date dateresolved = new Date(dateresolvedtimestamp);
+                        String status = tickets.getString("status");
+                        Ticket.TicketStatus ticketstatus = Ticket.TicketStatus.valueOf(status);
+                        Ticket newticket = new Ticket(id, desc, priority,reporter,datereported,resolution,dateresolved, ticketstatus);
+                        matches.add(newticket);
+                    }
+                    if(matches.isEmpty()){
+                        return Collections.emptyList();
+                    }
+                    return matches;
+
+        }
+        catch (SQLException e){
+            System.out.println("error searching by description " + e);
+
+        }
         // TODO search the database for all (OPEN AND RESOLVED) tickets that match the description
         //  Order the tickets by PRIORITY.
         //  If description is null, or a blank string, or empty string, return an empty list
