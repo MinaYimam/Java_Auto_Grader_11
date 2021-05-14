@@ -53,6 +53,33 @@ public class TicketStore {
     
     
     public List<Ticket> getAllOpenTickets() {
+        String getall = "SELECT * FROM ticket WHERE status = 'OPEN' ORDER BY priority";
+        try(Connection connection = DriverManager.getConnection(dbURI);
+            PreparedStatement statement = connection.prepareStatement(getall)){
+            ResultSet alltickets = statement.executeQuery();
+            List<Ticket> tickets = new ArrayList<>();
+            while(alltickets.next()){
+                int id= alltickets.getInt("id");
+                String description = alltickets.getString("description");
+                int priority = alltickets.getInt("priority");
+                String reporter = alltickets.getString("reporter");
+                long dateReportedstamp = alltickets.getLong("dateReported");
+                Date daterep = new Date(dateReportedstamp);
+                String resolution = alltickets.getString("resolution");
+                long dateresolvedstamp = alltickets.getLong("dateResolved");
+                Date dateres = new Date(dateresolvedstamp);
+                String status = alltickets.getString("status");
+                Ticket.TicketStatus ticketstatus = Ticket.TicketStatus.valueOf(status);
+                Ticket ticket = new Ticket(id, description, priority, reporter , daterep, resolution,dateres, ticketstatus);
+                tickets.add(ticket);
+            }
+            return tickets;
+        }
+        catch (SQLException e){
+            System.out.println("system error getting open tickets" + e);
+        }
+
+
         
         // TODO Query database, get all tickets which have the status "OPEN"
         //  order the tickets by priority - tickets with priority = 1 first, priority = 5 last
@@ -170,6 +197,29 @@ public class TicketStore {
     
     
     public void updateTicket(Ticket ticket) {
+        String update = "UPDATE ticket SET description = ?, reporter = ? ,priority = ?, dateReported =? , resolution =? , dateResolved = ? " +
+                "WHERE id =?";
+        try(Connection connection = DriverManager.getConnection(dbURI);
+            PreparedStatement preparedStatement = connection.prepareStatement(update)){
+            preparedStatement.setString(1,ticket.getDescription());
+            preparedStatement.setString(2,ticket.getReporter());
+            preparedStatement.setInt(3,ticket.getPriority());
+            Date dateReported = ticket.getDateReported();
+            long timestamprep = dateReported.getTime();
+            preparedStatement.setLong(4, timestamprep);
+            preparedStatement.setString(5, ticket.getResolution());
+            Date dateresolved = ticket.getDateResolved();
+            long timestampres = dateresolved.getTime();
+            preparedStatement.setLong(6, timestampres);
+            //Ticket.TicketStatus status = Ticket.TicketStatus.valueOf(stringstatus);
+            //preparedStatement.setString(7, stringstatus);
+
+            preparedStatement.execute();
+        }
+        catch (SQLException e){
+            System.out.println("unable to update " + e);
+
+        }
         
         // TODO Use the Ticket's ID to modify the row in the database with this ID
         //  modify row in the database to set the values contained in the Ticket object

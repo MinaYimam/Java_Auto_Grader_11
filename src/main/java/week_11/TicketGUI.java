@@ -187,6 +187,45 @@ public class TicketGUI extends JFrame {
                 }
             }
         });
+        showAllOpenTicketsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showAllOpenTickets();
+            }
+        });
+        resolveSelectedButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedindex = ticketList.getSelectedIndex();
+                if(selectedindex != -1){
+                    Ticket selectedticket =ticketList.getSelectedValue();
+                    if(selectedticket.getStatus().equals(Ticket.TicketStatus.RESOLVED)){
+                        showMessageDialog("this ticket is already resolved"); }
+                    else{
+                        String resolution = showInputDialog("what is the resolution?");
+                        if (resolution != null){
+                            selectedticket.setResolution(resolution);
+                            selectedticket.setDateResolved(new Date());
+                            selectedticket.setStatus(Ticket.TicketStatus.RESOLVED);
+                            controller.updateTicket(selectedticket);
+                            showMessageDialog("the ticket has been resolved ");
+                            ticketListModel.remove(selectedindex);
+                            ticketListStatusDescription.setText(ALL_TICKETS);
+                        }
+
+
+                }}
+                    else{showMessageDialog("selct a ticket to resolve?");
+
+                    }}
+        });
+
+    }
+    public void showAllOpenTickets(){
+        List<Ticket> allopentickets = controller.loadAllOpenTicketsFromStore();
+        ticketListModel.clear();
+        ticketListModel.addAll(allopentickets);
+        ticketListStatusDescription.setText(ALL_TICKETS);
     }
 
     // Call this method to quit the program.
